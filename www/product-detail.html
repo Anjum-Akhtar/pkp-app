@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+  
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="fontawesome/css/all.min.css">
+        
+        <title>PKP APP</title>
+    </head>
+    <body>
+        <div class="header"></div> 
+
+        <div class="container product-detail-page">
+            <div class="row my-5">
+                <div class="col-12" id="pro-detail">
+                    
+                </div>
+                <div class="col-12 my-5 border-top">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Details</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Reviews</button>
+                        </li>
+                      </ul>
+                      <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
+                            <h3>Product Details</h3>
+                            <p>his insulated puffer gives you all the warmth you'll need to hit the streets during the coldest months and look fresh doing it. Panels of thick Thermore® Ecodown® insulation are complemented by the roomy hood and storm flap to shield you from the elements.</p>
+                        </div>
+                        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
+                            <form method="POST" class="reviews shadow border p-3">
+                                <div class="mb-3"> 
+                                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email address"> 
+                                </div>
+                                <div class="mb-3"> 
+                                    <textarea class="w-100" name="review-msg" class=""></textarea>
+                                </div> 
+                                <a type="submit" class="btn">Submit</a>
+                            </form>
+                        </div>
+                      </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src="js/jquery-3.7.1.min.js"></script> 
+        <script src="js/bootstrap.bundle.min.js"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script> 
+        <script src="js/index.js"></script>
+        <script src="js/custom.js"></script> 
+        <script> 
+            $(function() {   
+                var pathname = window.location.pathname; // Returns path only (/path/example.html)
+                var url      = window.location.href;     // Returns full URL (https://example.com/path/example.html)
+                var origin   = window.location.origin; // Returns base origin https://example.com
+                var pro_id = url.substring(url.lastIndexOf('=') + 1); 
+                var pro_detail = {
+                        request_type:"productDetail", 
+                        product_id:pro_id     
+                    }
+                var json_str = JSON.stringify(pro_detail);
+                $.ajax({  
+                    url: API_URL+'productDetail.php',   
+                    method:'POST',   
+                    data:json_str,
+                    contentType: 'application/json',
+                    success: function(data) {   
+                        var res_data =  JSON.parse(data);   
+                            localStorage.setItem("gall", JSON.stringify(res_data.data.product_gal));
+                            $('#pro-detail').append(
+                                '<div class="product-slider">\
+                                    <img class="w-100" src="'+img_path+res_data.data.product_gal[0]+'" alt="Image">\
+                                </div>\
+                                <div class="product-detail">\
+                                    <h3>'+res_data.data.product_name+'</h3>\
+                                    <span class="sale" style="text-decoration: line-through;">&#8377; '+res_data.data.regular_price+'</span>\
+                                    <span>&#8377; '+res_data.data.sale_price+'</span>\
+                                    <div class="my-4">\
+                                        <div class="number">\
+                                            <span class="minus"><i class="fa-regular fa-square-minus"></i></span>\
+                                            <input class="text-center" type="text" value="1"/>\
+                                            <span class="plus"><i class="fa-regular fa-square-plus"></i></span>\
+                                        </div>\
+                                    </div>\
+                                    <p><b>Description:</b> '+res_data.data.long_desc+'</p>\
+                                    <div class="d-flex justify-content-between">\
+                                        <a class="addToCart btn" href="" data-pro_id="'+res_data.data.product_id+'"><i class="fa-solid fa-bag-shopping"></i> Add to Cart</a>\
+                                        <a class="wishBtn btn" href="" data-pro_id="'+res_data.data.product_id+'"><i class="fa-solid fa-heart"></i> Favorite</a>\
+                                    </div>\
+                                </div>'
+                            );   
+                    },  
+                    error: function(xhr, textStatus, errorThrown) {  
+                        console.log('Error in Database');  
+                    }  
+                });  
+            });  
+
+
+           
+            header();
+        </script>
+
+    </body>
+</html>

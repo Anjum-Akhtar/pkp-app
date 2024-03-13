@@ -2,33 +2,21 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
-        <meta name="format-detection" content="telephone=no">
-        <meta name="msapplication-tap-highlight" content="no">
-        <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
-        <meta name="color-scheme" content="light dark">
-        <link href="css/bootstrap.min.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
   
-        <link rel="stylesheet" href="css/index.css">
-        <title>Hello World</title>
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="fontawesome/css/all.min.css">
+        
+        <title>PKP APP</title>
     </head>
     <body>
+        <div class="header"></div>
+
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
-                    <p class="d-inline-flex gap-1">
-                        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                          Link with href
-                        </a>
-                        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                          Button with data-bs-target
-                        </button>
-                      </p>
-                      <div class="collapse" id="collapseExample">
-                        <div class="card card-body">
-                          Some placeholder content for the collapse component. This panel is hidden by default but revealed when the user activates the relevant trigger.
-                        </div>
-                      </div>
+                <div class="col-md-12">  
                     <div id="carouselExampleIndicators" class="carousel slide">
                         <div class="carousel-indicators">
                             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -54,14 +42,346 @@
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
-                      </div>
+                    </div>
+                </div>
+                <div class="col-md-12 py-3">
+                    <h2>Browse by Categories</h2>
+                    <!-- <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script> -->
+                    <section class="section slider-section"> 
+                        <div class="swiper swiper-slider">
+                            <div id="all-cat" class="swiper-wrapper">
+                                <!-- <div class="swiper-slide">
+                                    <a href="">
+                                        <img class="w-100" src="images/men-thumb.png" alt="Swiper">
+                                        <span class="text">
+                                            Cat Name
+                                        </span>
+                                    </a> 
+                                </div> 
+                                <div class="swiper-slide">
+                                    <a href="">
+                                        <img class="w-100" src="images/clothing-thumb.png" alt="Swiper">
+                                        <span class="text">
+                                            Cat Name
+                                        </span>
+                                    </a>
+                                    
+                                </div> 
+                                <div class="swiper-slide">
+                                    <a href="">
+                                        <img class="w-100" src="images/hoodies_&_sweatshirts-thumb.png" alt="Swiper">
+                                        <span class="text">
+                                            Cat Name
+                                        </span>
+                                    </a>
+                                    
+                                </div> 
+                                <div class="swiper-slide">
+                                    <a href="">
+                                        <img class="w-100" src="images/jackets_&_vests-thumb.png" alt="Swiper">
+                                        <span class="text">
+                                            Cat Name
+                                        </span>
+                                    </a>
+                                    
+                                </div> 
+                                <div class="swiper-slide">
+                                    <a href="">
+                                        <img class="w-100" src="images/pants_&_tights-thumb.png" alt="Swiper">
+                                        <span class="text">
+                                            Cat Name
+                                        </span>
+                                    </a>
+                                    
+                                </div> 
+                                <div class="swiper-slide">
+                                    <a href="">
+                                        <img class="w-100" src="images/shoes-thumb.png" alt="Swiper">
+                                        <span class="text">
+                                            Cat Name
+                                        </span>
+                                    </a>
+                                    
+                                </div> 
+                                <div class="swiper-slide">
+                                    <a href="">
+                                        <img class="w-100" src="images/tops_&_t-shirts-thumb.png" alt="Swiper">
+                                        <span class="text">
+                                            Cat Name
+                                        </span>
+                                    </a>
+                                    
+                                </div> 
+                                <div class="swiper-slide">
+                                    <a href="">
+                                        <img class="w-100" src="images/shoes-thumb.png" alt="Swiper">
+                                        <span class="text">
+                                            Cat Name
+                                        </span>
+                                    </a> 
+                                </div>  -->
+                            </div>
+                        </div> 
+                    </section>  
+                </div>
+                <div class="col-md-12 py-3"> 
+                    <section class="section slider-section"> 
+                        <div class="swiper winter-slider">
+                            <div class="swiper-wrapper">
+                                <div class="winter-slider">
+                                    <a href="">
+                                        <img class="w-100" src="images/winter_exclusive_for_kids-cover.png" alt="Swiper"> 
+                                    </a>
+                                    
+                                </div> 
+                                <div class="winter-slider">
+                                    <a href="">
+                                        <img class="w-100" src="images/winter_exclusive_for_man-cover.png" alt="Swiper"> 
+                                    </a>
+                                    
+                                </div> 
+                                <div class="winter-slider">
+                                    <a href="">
+                                        <img class="w-100" src="images/winter_exclusive_for_woman-cover.png" alt="Swiper"> 
+                                    </a>
+                                    
+                                </div>  
+                            </div>
+                        </div> 
+                    </section> 
+                </div>
+                <div class="col-md-12 py-3">
+                    <h2>Trendy Collections</h2>
+                    <div class="row" id="all">
+                        <!-- <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover.png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a> 
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div>  -->
+                        <!-- <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover (1).png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a>
+                                <span class="sale">&#8377; 800</span>
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div> 
+                        <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover (2).png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a>
+                                <span class="sale">&#8377; 800</span>
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div> 
+                        <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover (3).png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a> 
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div> 
+                        <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover (4).png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a>
+                                <span class="sale">&#8377; 800</span>
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div> 
+                        <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover (5).png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a> 
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div>  -->
+                    </div>
+                </div>
+                <div class="col-md-12 py-3">
+                    <a href="">
+                        <img class="w-100" src="images/winter_collection-preview.png" alt="Image">
+                    </a>
+                </div>
+                <div class="col-md-12 py-3">
+                    <h2>Most Popular</h2>
+                    <div class="row">
+                        <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover (6).png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a> 
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div> 
+                        <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover (7).png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a>
+                                <span class="sale">&#8377; 800</span>
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div> 
+                        <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover (8).png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a>
+                                <span class="sale">&#8377; 800</span>
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div> 
+                        <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover (9).png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a> 
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div> 
+                        <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover (10).png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a>
+                                <span class="sale">&#8377; 800</span>
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div> 
+                        <div class="col-6 my-3">
+                            <div class="img-box"> 
+                                <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon"> 
+                                <a href="">
+                                    <img class="w-100" src="images/1-cover (11).png" alt="Image">
+                                </a>
+                            </div>
+                            <div class="text-box">
+                                <a href="">
+                                    <p>Product Name</p>
+                                </a> 
+                                <span>&#8377; 600</span>
+                            </div>  
+                        </div> 
+                    </div>
+                </div>
+                <div class="col-md-12 py-3 mb-5">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="box">
+                                <img src="images/professional_service-thumb.png" alt="Icon">
+                                <h3>Professional Service</h3>
+                                <p>Efficient customer support from passionate team</p>
+                            </div> 
+                        </div>
+                        <div class="col-6">
+                            <div class="box">
+                                <img src="images/secure_payment-thumb.png" alt="Icon">
+                                <h3>Secure Payment</h3>
+                                <p>Different secure payment methods</p>
+                            </div> 
+                        </div> 
+                        <div class="col-6">
+                            <div class="box">
+                                <img src="images/fast_delivery-thumb.png" alt="Icon">
+                                <h3>Fast Delivery</h3>
+                                <p>Fast and convenient door to door delivery</p>
+                            </div> 
+                        </div>
+                        <div class="col-6">
+                            <div class="box">
+                                <img src="images/quality_&_savings-thumb.png" alt="Icon">
+                                <h3>Quality & Savings</h3>
+                                <p>Comprehensive quality control and affordable prices</p>
+                            </div> 
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <script src="js/bootstrap.bundle.min.js"></script>
-        <script src="js/jquery-3.7.1.min.js"></script>
-  
-        <script src="cordova.js"></script>
+
+
+        <script src="js/jquery-3.7.1.min.js"></script> 
+        <script src="js/bootstrap.bundle.min.js"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script> 
         <script src="js/index.js"></script>
+        <script src="js/custom.js"></script> 
+        <script>
+            header();
+        </script>
     </body>
 </html>

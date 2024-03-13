@@ -26,3 +26,4 @@ node_modules/
 /platforms/
 config.xml
 package.json
+package-lock.json

@@ -243,6 +243,10 @@ a.nav-link:hover,.menu-items li a:hover {
 }
 
 /* ========= Cart Menu========== */
+.search-box, header .search-close {
+    display: none;
+}
+/* ========= Cart Menu========== */
 .cart-toggle .cart-box img {
     width: 100px;
 }

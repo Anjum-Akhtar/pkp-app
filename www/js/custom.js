@@ -47,9 +47,18 @@ function header(){
                 </a>\
             </div>\
             <div class="col-2">\
-                <img class="w-50" src="images/search.svg" alt="Icon">\
+                <i class="fa fa-search search-open"></i>\
+                <i class="fa fa-remove search-close"></i>\
             </div>\
         </div>\
+        <form action="search.html" class="row search-box" method="POST">\
+          <div class="col-12 shadow p-3 mt-2 border bg-white">\
+            <div class="form-group">\
+              <input type="text" name="searchItem" class="w-100" required>\
+            </div>\
+            <button class="btn" type="submit" name="jh"><i class="fa fa-search"></i></button>\
+          </div>\
+        </form>\
     </header>\
     <div class="menu-toggle position-fixed" style="left:-90%">\
         <div class="row">\
@@ -138,14 +147,14 @@ function header(){
                   <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">\
                     <button class="btn nav-link active" id="soft-tab" data-bs-toggle="pill" data-bs-target="#soft" type="button" role="tab" aria-controls="soft" aria-selected="true">Soft Furnishing</button>\
                     <button class="nav-link" id="vases-tab" data-bs-toggle="pill" data-bs-target="#vases" type="button" role="tab" aria-controls="v-pills-profile" aria-selected="false">Vases</button>\
-                    <button class="nav-link" id="wall-tab" data-bs-toggle="pill" data-bs-target="#wall" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Wall Plates</button>\
-                    <button class="nav-link" id="combos-tab" data-bs-toggle="pill" data-bs-target="#combos" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">combos</button>\
+                    <button class="nav-link" id="wall-tab" data-bs-toggle="pill" data-bs-target="#home-essentials" type="button" role="tab" aria-controls="v-pills-messages" aria-selected="false">Home Essentials</button>\
+                    <button class="nav-link" id="combos-tab" data-bs-toggle="pill" data-bs-target="#tabletop" type="button" role="tab" aria-controls="v-pills-settings" aria-selected="false">Table Top Decor</button>\
                   </div>\
                   <div class="tab-content" id="v-pills-tabContent">\
                     <div class="row tab-pane fade show active" id="soft" role="tabpanel" aria-labelledby="soft-tab" tabindex="0"></div>\
                     <div class="row tab-pane fade" id="vases" role="tabpanel" aria-labelledby="vases-tab" tabindex="0"></div>\
-                    <div class="row tab-pane fade" id="wall" role="tabpanel" aria-labelledby="wall-tab" tabindex="0"></div>\
-                    <div class="row tab-pane fade" id="combos" role="tabpanel" aria-labelledby="combos-tab" tabindex="0"></div>\
+                    <div class="row tab-pane fade" id="home-essentials" role="tabpanel" aria-labelledby="wall-tab" tabindex="0"></div>\
+                    <div class="row tab-pane fade" id="tabletop" role="tabpanel" aria-labelledby="combos-tab" tabindex="0"></div>\
                   </div>\
                 </div>\
             </div>\
@@ -323,12 +332,12 @@ $(function() {
       method:'POST',   
       data:json_str,
       contentType: 'application/json',
-      success: function(data) {   
+      success: function(data) {    
           var res_data =  JSON.parse(data);  
           $.each(res_data.data,function(index,item){   
             $('#all-cat').append(
               '<div class="swiper-slide">\
-                <a href="">\
+                <a href="category.html?cat-name='+item.cat_title+'">\
                     <img class="w-100" src="images/men-thumb.png" alt="Swiper">\
                     <span class="text">'+item.cat_title+'</span>\
                 </a>\
@@ -375,66 +384,74 @@ $(function() {
 
                   if(item.categories == 'soft furnishing'){
                     $('#soft').append(
-                      '<div class="col-6 mb-3 shadow border p-2">\
-                        <div class="img-box">\
-                          <a href="product-detail.html?pro-id='+item.product_id+'">\
-                            <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
-                          </a>\
-                        </div>\
-                        <div class="text-box p-2">\
-                          <a href="product-detail.html?pro-id='+item.product_id+'">\
-                            <p>'+item.product_name.substring(0, 6)+'...</p>\
-                          </a>\
+                      '<div class="col-6 mb-3">\
+                        <div class="shadow border p-1">\
+                          <div class="img-box">\
+                            <a href="product-detail.html?pro-id='+item.product_id+'">\
+                              <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
+                            </a>\
+                          </div>\
+                          <div class="text-box p-2">\
+                            <a href="product-detail.html?pro-id='+item.product_id+'">\
+                              <p>'+item.product_name.substring(0, 8)+'...</p>\
+                            </a>\
+                          </div>\
                         </div>\
                       </div>'
                     );
                   }
                   if(item.categories == 'vases'){
                     $('#vases').append(
-                      '<div class="col-6 mb-3 shadow border p-2">\
-                        <div class="img-box">\
-                          <a href="product-detail.html?pro-id='+item.product_id+'">\
-                            <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
-                          </a>\
-                        </div>\
-                        <div class="text-box p-2">\
-                          <a href="product-detail.html?pro-id='+item.product_id+'">\
-                            <p>'+item.product_name.substring(0, 6)+'...</p>\
-                          </a>\
+                      '<div class="col-6 mb-3">\
+                        <div class="shadow border p-1">\
+                          <div class="img-box">\
+                            <a href="product-detail.html?pro-id='+item.product_id+'">\
+                              <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
+                            </a>\
+                          </div>\
+                          <div class="text-box p-2">\
+                            <a href="product-detail.html?pro-id='+item.product_id+'">\
+                              <p>'+item.product_name.substring(0, 8)+'...</p>\
+                            </a>\
+                          </div>\
                         </div>\
                       </div>'
                     );
                   }
                   if(item.categories == 'home essentials'){
-                    $('#wall').append(
-                      '<div class="col-6 mb-3 shadow border p-2">\
-                      <div class="img-box">\
-                        <a href="product-detail.html?pro-id='+item.product_id+'">\
-                          <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
-                        </a>\
-                      </div>\
-                      <div class="text-box p-2">\
-                        <a href="product-detail.html?pro-id='+item.product_id+'">\
-                          <p>'+item.product_name.substring(0, 6)+'...</p>\
-                        </a>\
-                      </div>\
-                    </div>'
+                    $('#home-essentials').append(
+                      '<div class="col-6 mb-3">\
+                        <div class="shadow border p-1">\
+                          <div class="img-box">\
+                            <a href="product-detail.html?pro-id='+item.product_id+'">\
+                              <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
+                            </a>\
+                          </div>\
+                          <div class="text-box p-2">\
+                            <a href="product-detail.html?pro-id='+item.product_id+'">\
+                              <p>'+item.product_name.substring(0, 8)+'...</p>\
+                            </a>\
+                          </div>\
+                        </div>\
+                      </div>'
                     );
                   }
                   if(item.categories == 'table top decor'){
-                    $('#combos').append(
-                      '<div class="col-6 mb-3 shadow border p-2">\
-                      <div class="img-box">\
-                        <a href="product-detail.html?pro-id='+item.product_id+'">\
-                          <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
-                        </a>\
-                      </div>\
-                      <div class="text-box p-2">\
-                        <a href="product-detail.html?pro-id='+item.product_id+'">\
-                          <p>'+item.product_name.substring(0, 6)+'...</p>\
-                        </a>\
-                      </div>\
-                    </div>'
+                    $('#tabletop').append(
+                      '<div class="col-6 mb-3">\
+                        <div class="shadow border p-1">\
+                          <div class="img-box">\
+                            <a href="product-detail.html?pro-id='+item.product_id+'">\
+                              <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
+                            </a>\
+                          </div>\
+                          <div class="text-box p-2">\
+                            <a href="product-detail.html?pro-id='+item.product_id+'">\
+                              <p>'+item.product_name.substring(0, 8)+'...</p>\
+                            </a>\
+                          </div>\
+                        </div>\
+                      </div>'
                     );
                   }
               } 
@@ -471,31 +488,139 @@ $(function() {
   var data = {request_type:"getProducts"}
   var json_str = JSON.stringify(data);
   $.ajax({  
-      url: API_URL+'getProducts.php',   
-      method:'POST',   
-      data:json_str,
-      contentType: 'application/json',
-      success: function(data) {   
-          var res_data =  JSON.parse(data);  
-          $.each(res_data.data,function(index,item){   
-              if(item.regular_price > 0){
-                  $('#all-product').append(
-                    '<li>\
-                      <a class="" href="product-detail.html?pro-id='+item.product_id+'">\
-                          <img class="w-100" src="'+img_path+item.product_img1+'" alt="Product Images">\
-                          <p>'+item.product_name+'</p> \
-                          <div class="cart">\
-                              <span>&#8377; '+item.regular_price+'</span>\
+    url: API_URL+'getProducts.php',   
+    method:'POST',   
+    data:json_str,
+    contentType: 'application/json',
+    success: function(data) {   
+      var res_data =  JSON.parse(data);  
+      $.each(res_data.data,function(index,item){   
+        if(item.regular_price > 0){
+          $('#all-product').append(
+            '<li>\
+            <a class="" href="product-detail.html?pro-id='+item.product_id+'">\
+            <img class="w-100" src="'+img_path+item.product_img1+'" alt="Product Images">\
+            <p>'+item.product_name+'</p> \
+            <div class="cart">\
+            <span>&#8377; '+item.regular_price+'</span>\
                           </div>\
-                      </a>\
-                  </li>'
+                          </a>\
+                          </li>'
                   );
               }
 
-          })  
-      },  
+            })  
+          },  
       error: function(xhr, textStatus, errorThrown) {  
           console.log('Error in Database');  
       }  
   });  
+});
+/* ================================= Search Box =================================== */
+$('body').on('click','.search-open',function(){ 
+  $('.search-box').css('display','block');
+  $('.search-close').css('display','block');
+  $('.search-open').css('display','none');
+})
+$('body').on('click','.search-close',function(){ 
+  $('.search-box').css('display','none');
+  $('.search-close').css('display','none');
+  $('.search-open').css('display','block');
+}) 
+
+
+/* ================================= Search Product =================================== */
+// $('body').on('submit','.search-box .btn',function(e){
+  $("form.search-box").submit(function() { 
+  // e.preventDefault();  
+    var searchItem = $('.search-box input[name=searchItem').val();
+    // var urlParams = new URLSearchParams(window.location.search);
+    // var cat_name = urlParams.get('cat-name');
+    console.log("searchItem",searchItem);
+
+    var pro_detail = {
+            request_type:"getProducts", 
+            search_item:searchItem     
+        }
+    var json_str = JSON.stringify(pro_detail); 
+    $.ajax({  
+        url: API_URL+'getProducts.php',   
+        method:'POST',   
+        data:json_str,
+        contentType: 'application/json',
+        success: function(data) {   
+            var res_data =  JSON.parse(data);    
+            console.log("res_data",res_data);
+            exit;
+            $.each(res_data.data,function(index,item){  
+                $('#cat-product').append(
+                    '<div class="col-6 my-3">\
+                        <div class="img-box">\
+                            <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon">\
+                            <a href="product-detail.html?pro-id='+item.product_id+'">\
+                            <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
+                            </a>\
+                        </div>\
+                        <div class="text-box">\
+                            <a href="product-detail.html?pro-id='+item.product_id+'">\
+                            <p>'+item.product_name+'</p>\
+                            </a>\
+                            <span class="sale">&#8377; '+item.regular_price+'</span>\
+                            <span>&#8377; '+item.sale_price+'</span>\
+                        </div>\
+                    </div>'
+                );   
+            })
+        },  
+        error: function(xhr, textStatus, errorThrown) {  
+            console.log('Error in Database');  
+        }  
+    });  
 });  
+
+// $('.search-box').validate({
+//   rules:{
+//       required:true,
+//   },messages:{
+//     searchItem:{
+//           required:'Please enter search value'
+//       }
+//   },submitHandler:function(form,e){
+//     e.preventDefault();
+//     var searchItem = $('.search-box input[name=searchItem]').val(); 
+//     alert(searchItem);
+//     var search_detail = {
+//       request_type:"search",
+//       search_item:searchItem
+//     }
+//     var json_str = JSON.stringify(search_detail);
+//     $.ajax({  
+//       url: API_URL+'search.php',   
+//       method:'POST',   
+//       data:json_str,
+//       contentType: 'application/json',
+//       success: function(data) {   
+//         var res_data =  JSON.parse(data);  
+//         console.log("res_data",res_data);
+//         $.each(res_data.data,function(index,item){   
+//           if(item.regular_price > 0){
+//             $('#search-prod-page').append(
+//               '<li>\
+//                 <a class="" href="product-detail.html?pro-id='+item.product_id+'">\
+//                   <img class="w-100" src="'+img_path+item.product_img1+'" alt="Product Images">\
+//                   <p>'+item.product_name+'</p> \
+//                   <div class="cart">\
+//                     <span>&#8377; '+item.regular_price+'</span>\
+//                   </div>\
+//                 </a>\
+//               </li>'
+//             );
+//           } 
+//         })  
+//       },  
+//       error: function(xhr, textStatus, errorThrown) {  
+//           console.log('Error in Database');  
+//       }  
+//     }); 
+//   }
+// }); 

@@ -20,30 +20,30 @@
                     <h1 class="title text-center">Sign Up</h1>
                     <form action="" class="login shadow p-4 border my-4" method="POST">
                         <div class="mb-3">
-                          <label class="form-label">First Name</label>
-                          <input type="text" name="fname" class="form-control"> 
+                          <label class="form-label">First Name <span>*</span></label>
+                          <input type="text" name="fname" class="form-control shadow-none" required> 
                         </div>
                         <div class="mb-3">
-                          <label class="form-label">Last Name</label>
-                          <input type="text" name="lname" class="form-control"> 
+                          <label class="form-label">Last Name <span>*</span></label>
+                          <input type="text" name="lname" class="form-control shadow-none" required> 
                         </div>
                         <div class="mb-3">
-                          <label class="form-label">Phone</label>
-                          <input type="text" name="phone" class="form-control"> 
+                          <label class="form-label">Phone <span>*</span></label>
+                          <input type="text" name="phone" class="form-control shadow-none" required> 
                         </div>
                         <div class="mb-3">
                           <label class="form-label">Email address <span>*</span></label>
-                          <input type="email" name="email" class="form-control"> 
+                          <input type="email" name="email" class="form-control shadow-none" required> 
                         </div>
                         <div class="mb-3">
                           <label class="form-label">Password <span>*</span></label>
-                          <input type="password" name="pass" id="pass" class="form-control">
+                          <input type="password" name="pass" id="pass" class="form-control shadow-none" required>
                         </div> 
                         <div class="mb-3">
                           <label class="form-label">Confirm Password <span>*</span></label>
-                          <input type="password" name="cpass" class="form-control">
+                          <input type="password" name="cpass" class="form-control shadow-none" required>
                         </div> 
-                        <a type="submit" class="btn w-100">Sign Up</a>
+                        <a type="submit" name="signup" class="btn w-100">Sign Up</a>
                     </form>
                     <div class="text-center links mb-5">
                         <a href="/login.html">Login</a> 
@@ -56,7 +56,7 @@
         <script src="js/jquery-3.7.1.min.js"></script> 
         <script src="js/bootstrap.bundle.min.js"></script> 
         <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script> 
-        <script src="js/index.js"></script>
+        <script src="js/jquery.validate.min.js"></script> 
         <script src="js/custom.js"></script> 
         <script> 
             header();

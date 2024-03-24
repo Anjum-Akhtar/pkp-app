@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="fontawesome/css/all.min.css">
+        
+        <title>PKP APP</title>
+    </head>
+    <body>
+        <div class="header"></div> 
+
+        <div class="container checkout-page">
+            <div class="row"> 
+                <div class="col-12 my-5">  
+                    <h1 class="title text-center">Checkout</h1>
+                    <form action="" class="row checkout shadow p-4 border my-4" method="POST">
+                        <div class="mb-3 col-12">
+                          <label class="form-label">Full Name <span>*</span></label>
+                          <input type="text" name="fname" class="form-control shadow-none" required> 
+                        </div> 
+                        <div class="mb-3 col-12">
+                          <label class="form-label">Phone Number <span>*</span></label>
+                          <input type="text" name="phone" class="form-control shadow-none" required> 
+                        </div>
+                        <div class="mb-3 col-6">
+                          <label class="form-label">Pincode <span>*</span></label>
+                          <input type="email" name="email" class="form-control shadow-none" required> 
+                        </div>
+                        <div class="mb-3 col-6">
+                          <label class="form-label">State <span>*</span></label>
+                          <input type="password" name="pass" id="pass" class="form-control shadow-none" required>
+                        </div>   
+                        <div class="mb-3 col-6">
+                          <label class="form-label">City <span>*</span></label>
+                          <input type="text" name="city" class="form-control shadow-none" required>
+                        </div>    
+                        <div class="mb-3 col-12">
+                          <label class="form-label">House No.,Building Name <span>*</span></label>
+                          <textarea name="address1" class="form-control shadow-none" required></textarea>
+                        </div>   
+                        <div class="mb-3 col-12">
+                          <label class="form-label">Road name,Area,Colony <span>*</span></label>
+                          <textarea name="address2" class="form-control shadow-none" required></textarea>
+                        </div>   
+                        <div class="mb-3 col-12" role="group">
+                          <label class="form-label">Type of address <span>*</span></label>
+                          <input type="radio" class="btn-check" name="btnradio" id="work" autocomplete="off" checked>
+                          <label class="btn btn-outline-primary" for="work">Work</label>
+                        
+                          <input type="radio" class="btn-check" name="btnradio" id="home" autocomplete="off">
+                          <label class="btn btn-outline-primary" for="home">Home</label> 
+                        </div>
+                        
+                        <a href="thankyou.html" type="submit" name="proceed_to_pay" class="btn w-100">Proceed to Pay</a>
+                    </form> 
+                </div> 
+            </div>
+        </div>
+
+
+        <script src="js/jquery-3.7.1.min.js"></script> 
+        <script src="js/bootstrap.bundle.min.js"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script> 
+        <script src="js/jquery.validate.min.js"></script> 
+        <script src="js/custom.js"></script> 
+        <script> 
+            header();
+        </script>
+
+    </body>
+</html>

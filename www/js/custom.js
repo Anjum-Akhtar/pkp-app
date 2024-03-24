@@ -51,12 +51,10 @@ function header(){
                 <i class="fa fa-remove search-close"></i>\
             </div>\
         </div>\
-        <form action="search.html" class="row search-box" method="POST">\
-          <div class="col-12 shadow p-3 mt-2 border bg-white">\
-            <div class="form-group">\
-              <input type="text" name="searchItem" class="w-100" required>\
-            </div>\
-            <button class="btn" type="submit" name="jh"><i class="fa fa-search"></i></button>\
+        <form class="row search-box" method="POST">\
+          <div class="col-12 shadow d-flex p-3 mt-2 border bg-white">\
+              <input type="text" name="searchItem" class="w-100 border border-secondary shadow-none" required>\
+              <button class="btn searchBtn" type="submit" name="submit"><i class="fa fa-search"></i></button>\
           </div>\
         </form>\
     </header>\
@@ -171,6 +169,7 @@ function header(){
                 </a>\
             </div>\
             <div class="col-12">\
+              <form>\
                 <ul class="list-unstyled mt-4">\
                     <li>\
                         <div class="row cart-box border-top py-4">\
@@ -225,7 +224,8 @@ function header(){
                     <p><strong>Subtotal</strong></p>\
                     <p><strong>&#8377;1200.00</strong></p>\
                 </div>\
-                <button class="w-100 btn" type="submit">Process to Checkout</button>\
+                <a href="checkout.html" class="w-100 btn" type="submit">Process to Checkout</a>\
+              </form>\
             </div>\
         </div>\
     </div>\
@@ -335,6 +335,7 @@ $(function() {
       success: function(data) {    
           var res_data =  JSON.parse(data);  
           $.each(res_data.data,function(index,item){   
+            // console.log("res_data.data",res_data.data);
             $('#all-cat').append(
               '<div class="swiper-slide">\
                 <a href="category.html?cat-name='+item.cat_title+'">\
@@ -343,6 +344,9 @@ $(function() {
                 </a>\
               </div>'
             );  
+            $('.allCatDropdown').append(
+              '<li class="d-block"><a class="dropdown-item w-100" href="products.html?cat-name='+item.cat_title+'" data_cat-url='+item.cat_url+'>'+item.cat_title+'</a></li>'
+            );
           })  
       },  
       error: function(xhr, textStatus, errorThrown) {  
@@ -351,6 +355,54 @@ $(function() {
   });  
 });  
 
+/* ================================= Get Products Base on category =================================== */
+$(function() {    
+  var urlParams = new URLSearchParams(window.location.search);
+  var cat_name = urlParams.get('cat-name');
+  console.log("cat name",cat_name);
+  var pro_detail = {
+          request_type:"getProducts", 
+          cat_name:cat_name     
+      }
+  var json_str = JSON.stringify(pro_detail); 
+  $.ajax({  
+      url: API_URL+'getProducts.php',   
+      method:'POST',   
+      data:json_str,
+      contentType: 'application/json',
+      success: function(data) {   
+          var res_data =  JSON.parse(data);
+           
+          $.each(res_data.data,function(index,item){   
+            if(item.regular_price > 0 && item.sale_price > 0){
+              $('#all-product').append(
+                  '<li class="col-6 my-3">\
+                      <div class="img-box">\
+                          <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon">\
+                          <a href="product-detail.html?pro-id='+item.product_id+'">\
+                          <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
+                          </a>\
+                      </div>\
+                      <div class="text-box">\
+                          <a href="product-detail.html?pro-id='+item.product_id+'">\
+                            <p>'+item.product_name+'</p>\
+                          </a>\
+                          <p><b>Cat:</b> '+item.categories+'</p>\
+                          <span class="sale">&#8377; '+item.regular_price+'</span>\
+                          <span>&#8377; '+item.sale_price+'</span>\
+                      </div>\
+                  </li>'
+              );  
+            } else {
+              $('.noRecord').append('No Product Found!');
+            }
+          })
+      },  
+      error: function(xhr, textStatus, errorThrown) {  
+          console.log('Error in Database');  
+      }  
+  });  
+});  
 /* ================================= Get Products Home =================================== */
 $(function() {  
   var data = {request_type:"getProducts"}
@@ -484,38 +536,37 @@ $(function() {
 // });
 
 /* ================================= Product Category Select =================================== */
-$(function() {  
-  var data = {request_type:"getProducts"}
-  var json_str = JSON.stringify(data);
-  $.ajax({  
-    url: API_URL+'getProducts.php',   
-    method:'POST',   
-    data:json_str,
-    contentType: 'application/json',
-    success: function(data) {   
-      var res_data =  JSON.parse(data);  
-      $.each(res_data.data,function(index,item){   
-        if(item.regular_price > 0){
-          $('#all-product').append(
-            '<li>\
-            <a class="" href="product-detail.html?pro-id='+item.product_id+'">\
-            <img class="w-100" src="'+img_path+item.product_img1+'" alt="Product Images">\
-            <p>'+item.product_name+'</p> \
-            <div class="cart">\
-            <span>&#8377; '+item.regular_price+'</span>\
-                          </div>\
-                          </a>\
-                          </li>'
-                  );
-              }
-
-            })  
-          },  
-      error: function(xhr, textStatus, errorThrown) {  
-          console.log('Error in Database');  
-      }  
-  });  
-});
+// $(function() {  
+//   var data = {request_type:"getProducts"}
+//   var json_str = JSON.stringify(data);
+//   $.ajax({  
+//     url: API_URL+'getProducts.php',   
+//     method:'POST',   
+//     data:json_str,
+//     contentType: 'application/json',
+//     success: function(data) {   
+//       var res_data =  JSON.parse(data);  
+//       $.each(res_data.data,function(index,item){   
+//         if(item.regular_price > 0){
+//           $('#all-product').append(
+//             '<li>\
+//               <a class="" href="product-detail.html?pro-id='+item.product_id+'">\
+//                 <img class="w-100" src="'+img_path+item.product_img1+'" alt="Product Images">\
+//                 <p>'+item.product_name+'</p> \
+//                 <div class="cart">\
+//                   <span>&#8377; '+item.regular_price+'</span>\
+//                 </div>\
+//               </a>\
+//             </li>'
+//           );
+//         } 
+//       })  
+//     },  
+//     error: function(xhr, textStatus, errorThrown) {  
+//         console.log('Error in Database');  
+//     }  
+//   });  
+// });
 /* ================================= Search Box =================================== */
 $('body').on('click','.search-open',function(){ 
   $('.search-box').css('display','block');
@@ -530,53 +581,105 @@ $('body').on('click','.search-close',function(){
 
 
 /* ================================= Search Product =================================== */
-// $('body').on('submit','.search-box .btn',function(e){
-  $("form.search-box").submit(function() { 
-  // e.preventDefault();  
-    var searchItem = $('.search-box input[name=searchItem').val();
-    // var urlParams = new URLSearchParams(window.location.search);
-    // var cat_name = urlParams.get('cat-name');
-    console.log("searchItem",searchItem);
-
+$('body').on('submit','.search-box',function(e){
+  e.preventDefault();
+  var searchItem = $('.search-box input[name=searchItem').val();
+  
     var pro_detail = {
             request_type:"getProducts", 
             search_item:searchItem     
         }
     var json_str = JSON.stringify(pro_detail); 
+   
     $.ajax({  
-        url: API_URL+'getProducts.php',   
-        method:'POST',   
-        data:json_str,
-        contentType: 'application/json',
-        success: function(data) {   
-            var res_data =  JSON.parse(data);    
-            console.log("res_data",res_data);
-            exit;
-            $.each(res_data.data,function(index,item){  
-                $('#cat-product').append(
-                    '<div class="col-6 my-3">\
-                        <div class="img-box">\
-                            <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon">\
-                            <a href="product-detail.html?pro-id='+item.product_id+'">\
-                            <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
-                            </a>\
-                        </div>\
-                        <div class="text-box">\
-                            <a href="product-detail.html?pro-id='+item.product_id+'">\
-                            <p>'+item.product_name+'</p>\
-                            </a>\
-                            <span class="sale">&#8377; '+item.regular_price+'</span>\
-                            <span>&#8377; '+item.sale_price+'</span>\
-                        </div>\
-                    </div>'
-                );   
+      url: API_URL+'getProducts.php',   
+      method:'POST',   
+      data:json_str,
+      contentType: 'application/json',
+      success: function(data) {   
+          var res_data =  JSON.parse(data);    
+           
+          if(res_data.status == '200'){
+            // console.log("res_data",res_data.data);
+            location.href = "search.html" 
+            $.each(res_data.data,function(index,item){
+              $('#search-prod-page').append(
+                  '<li class="col-6 my-3">\
+                      <div class="img-box">\
+                          <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon">\
+                          <a href="product-detail.html?pro-id='+item.product_id+'">\
+                          <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
+                          </a>\
+                      </div>\
+                      <div class="text-box">\
+                          <a href="product-detail.html?pro-id='+item.product_id+'">\
+                          <p>'+item.product_name+'</p>\
+                          </a>\
+                          <span class="sale">&#8377; '+item.regular_price+'</span>\
+                          <span>&#8377; '+item.sale_price+'</span>\
+                      </div>\
+                  </li>'
+              );   
             })
-        },  
-        error: function(xhr, textStatus, errorThrown) {  
-            console.log('Error in Database');  
-        }  
-    });  
-});  
+          } else{
+            location.href = "search.html" 
+            $('.no-data').append('<p>No Record Found!</p>');  
+          }  
+      },  
+      error: function(xhr, textStatus, errorThrown) {  
+          console.log('Error in Database');  
+      }  
+  }); 
+})
+// $('body').on('submit','.search-box .btn',function(e){
+  // $("form.search-box").submit(function() { 
+  // e.preventDefault();  
+  // alert();
+  // exit;
+    // var searchItem = $('.search-box input[name=searchItem').val();
+    // var urlParams = new URLSearchParams(window.location.search);
+    // var cat_name = urlParams.get('cat-name');
+//     console.log("searchItem",searchItem);
+
+//     var pro_detail = {
+//             request_type:"getProducts", 
+//             search_item:searchItem     
+//         }
+//     var json_str = JSON.stringify(pro_detail); 
+//     $.ajax({  
+//         url: API_URL+'getProducts.php',   
+//         method:'POST',   
+//         data:json_str,
+//         contentType: 'application/json',
+//         success: function(data) {   
+//             var res_data =  JSON.parse(data);    
+//             console.log("res_data",res_data);
+//             exit;
+//             $.each(res_data.data,function(index,item){  
+//                 $('#cat-product').append(
+//                     '<div class="col-6 my-3">\
+//                         <div class="img-box">\
+//                             <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon">\
+//                             <a href="product-detail.html?pro-id='+item.product_id+'">\
+//                             <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
+//                             </a>\
+//                         </div>\
+//                         <div class="text-box">\
+//                             <a href="product-detail.html?pro-id='+item.product_id+'">\
+//                             <p>'+item.product_name+'</p>\
+//                             </a>\
+//                             <span class="sale">&#8377; '+item.regular_price+'</span>\
+//                             <span>&#8377; '+item.sale_price+'</span>\
+//                         </div>\
+//                     </div>'
+//                 );   
+//             })
+//         },  
+//         error: function(xhr, textStatus, errorThrown) {  
+//             console.log('Error in Database');  
+//         }  
+//     });  
+// });  
 
 // $('.search-box').validate({
 //   rules:{
@@ -589,38 +692,76 @@ $('body').on('click','.search-close',function(){
 //     e.preventDefault();
 //     var searchItem = $('.search-box input[name=searchItem]').val(); 
 //     alert(searchItem);
-//     var search_detail = {
-//       request_type:"search",
-//       search_item:searchItem
+//     var pro_detail = {
+//       request_type:"getProducts", 
+//       search_item:searchItem     
 //     }
-//     var json_str = JSON.stringify(search_detail);
+//     var json_str = JSON.stringify(pro_detail); 
 //     $.ajax({  
-//       url: API_URL+'search.php',   
-//       method:'POST',   
-//       data:json_str,
-//       contentType: 'application/json',
-//       success: function(data) {   
-//         var res_data =  JSON.parse(data);  
-//         console.log("res_data",res_data);
-//         $.each(res_data.data,function(index,item){   
-//           if(item.regular_price > 0){
-//             $('#search-prod-page').append(
-//               '<li>\
-//                 <a class="" href="product-detail.html?pro-id='+item.product_id+'">\
-//                   <img class="w-100" src="'+img_path+item.product_img1+'" alt="Product Images">\
-//                   <p>'+item.product_name+'</p> \
-//                   <div class="cart">\
-//                     <span>&#8377; '+item.regular_price+'</span>\
-//                   </div>\
-//                 </a>\
-//               </li>'
-//             );
-//           } 
-//         })  
-//       },  
-//       error: function(xhr, textStatus, errorThrown) {  
-//           console.log('Error in Database');  
-//       }  
-//     }); 
+//         url: API_URL+'getProducts.php',   
+//         method:'POST',   
+//         data:json_str,
+//         contentType: 'application/json',
+//         success: function(data) {   
+//             var res_data =  JSON.parse(data);    
+//             console.log("res_data",res_data);
+//             exit;
+//             $.each(res_data.data,function(index,item){  
+//                 $('#cat-product').append(
+//                     '<div class="col-6 my-3">\
+//                         <div class="img-box">\
+//                             <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon">\
+//                             <a href="product-detail.html?pro-id='+item.product_id+'">\
+//                             <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
+//                             </a>\
+//                         </div>\
+//                         <div class="text-box">\
+//                             <a href="product-detail.html?pro-id='+item.product_id+'">\
+//                             <p>'+item.product_name+'</p>\
+//                             </a>\
+//                             <span class="sale">&#8377; '+item.regular_price+'</span>\
+//                             <span>&#8377; '+item.sale_price+'</span>\
+//                         </div>\
+//                     </div>'
+//                 );   
+//             })
+//         },  
+//         error: function(xhr, textStatus, errorThrown) {  
+//             console.log('Error in Database');  
+//         }  
+//     });
+//     // var search_detail = {
+//     //   request_type:"search",
+//     //   search_item:searchItem
+//     // }
+//     // var json_str = JSON.stringify(search_detail);
+//     // $.ajax({  
+//     //   url: API_URL+'search.php',   
+//     //   method:'POST',   
+//     //   data:json_str,
+//     //   contentType: 'application/json',
+//     //   success: function(data) {   
+//     //     var res_data =  JSON.parse(data);  
+//     //     console.log("res_data",res_data);
+//     //     $.each(res_data.data,function(index,item){   
+//     //       if(item.regular_price > 0){
+//     //         $('#search-prod-page').append(
+//     //           '<li>\
+//     //             <a class="" href="product-detail.html?pro-id='+item.product_id+'">\
+//     //               <img class="w-100" src="'+img_path+item.product_img1+'" alt="Product Images">\
+//     //               <p>'+item.product_name+'</p> \
+//     //               <div class="cart">\
+//     //                 <span>&#8377; '+item.regular_price+'</span>\
+//     //               </div>\
+//     //             </a>\
+//     //           </li>'
+//     //         );
+//     //       } 
+//     //     })  
+//     //   },  
+//     //   error: function(xhr, textStatus, errorThrown) {  
+//     //       console.log('Error in Database');  
+//     //   }  
+//     // }); 
 //   }
 // }); 

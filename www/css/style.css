@@ -289,11 +289,11 @@ span.plus, span.minus {
 }
 
 /* ========= Product Page ========== */
-.product-page ul li {
+/* .product-page ul li {
     width: 50%;
     display: inline-flex;
     padding: 12px;
-}
+} */
 li a {
     text-decoration: none;
     color: #000;

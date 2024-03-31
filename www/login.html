@@ -19,19 +19,21 @@
                 <div class="col-12 mt-5">  
                     <h1 class="title text-center">Sign In</h1>
                     <form action="" class="login shadow p-4 border my-4" method="POST">
+                        <div class="result mt-4"></div>
                         <div class="mb-3">
                           <label for="exampleInputEmail1" class="form-label">Email address <span>*</span></label>
-                          <input type="email" class="form-control shadow-none" required> 
+                          <input type="email" class="form-control shadow-none" name="login_email" required> 
                         </div>
                         <div class="mb-3">
                           <label for="exampleInputPassword1" class="form-label">Password <span>*</span></label>
-                          <input type="password" class="form-control shadow-none" required>
+                          <input type="password" class="form-control shadow-none" name="login_pass" required>
                         </div>
                         <div class="mb-3 form-check">
                           <input type="checkbox" class="form-check-input" id="exampleCheck1">
                           <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                        </div>
-                        <a type="submit" name="Login" class="btn w-100">Login</a>
+                        </div> 
+                        <button type="submit" name="Login" class="btn w-100">Login <span class="spinner-grow spinner-grow-sm"></span></button>
+                        
                     </form>
                     <div class="text-center links">
                         <a href="/register.html">Register</a>
@@ -49,6 +51,58 @@
         <script src="js/custom.js"></script> 
         <script> 
             header();
+
+            /* ================================= Login =================================== */
+            $('.login').validate({
+                rules:{
+                    required:true,
+                    login_email:{
+                        email:true
+                    } 
+                },messages:{ 
+                    login_email:{
+                        required:'Please enter eamil address',
+                        email:'Please enter valid email'
+                    },
+                    login_pass:{
+                        required:'Please enter password' 
+                    }
+                },submitHandler:function(form,e){
+                    e.preventDefault();
+                    $('.spinner-grow').css("display","inline-block");
+                    var login_email = $('.login input[name=login_email]').val(); 
+                    var login_pass = $('.login input[name=login_pass]').val();  
+
+                    var user_login_data = {
+                        request_type:"login", 
+                        email:login_email, 
+                        password:login_pass      
+                    }
+                    var json_login = JSON.stringify(user_login_data);  
+                    $.ajax({  
+                        url: API_URL+'login.php',   
+                        method:'POST',   
+                        data:json_login,
+                        contentType: 'application/json',
+                        success: function(data) {    
+                            var login_data =  JSON.parse(data);  
+                            $('.spinner-grow').css("display","none");
+                            if(login_data.status == '200'){    
+                                window.location.href = "dashboard.html"; 
+                            }else if(login_data.status == '404'){ 
+                                $('.result').html('<p class="text-danger">Please enter valid password!</p>');
+                            }else if(login_data.status == '500'){ 
+                                $('.result').html('<p class="text-danger">You are not register with us!</p>');
+                            }else{ 
+                                $('.result').html('<p class="text-danger">Something wents wrong!</p>');
+                            } 
+                        },
+                        error: function(error) {  
+                            console.log('Error in Database');  
+                        } 
+                    });
+                }
+            }); 
         </script>
 
     </body>

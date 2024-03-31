@@ -18,7 +18,7 @@
             <div class="row"> 
                 <div class="col-12 my-5">  
                     <h1 class="title text-center">Sign Up</h1>
-                    <form action="" class="login shadow p-4 border my-4" method="POST">
+                    <form action="" class="register shadow p-4 border my-4" method="POST">
                         <div class="mb-3">
                           <label class="form-label">First Name <span>*</span></label>
                           <input type="text" name="fname" class="form-control shadow-none" required> 
@@ -43,7 +43,8 @@
                           <label class="form-label">Confirm Password <span>*</span></label>
                           <input type="password" name="cpass" class="form-control shadow-none" required>
                         </div> 
-                        <a type="submit" name="signup" class="btn w-100">Sign Up</a>
+                        <button type="submit" name="signup" class="btn w-100">Sign Up <span class="spinner-grow spinner-grow-sm"></span></button>
+                        <div class="result text-center mt-4"></div>
                     </form>
                     <div class="text-center links mb-5">
                         <a href="/login.html">Login</a> 
@@ -60,6 +61,95 @@
         <script src="js/custom.js"></script> 
         <script> 
             header();
+
+            /* ================================= Register =================================== */
+            $('.register').validate({
+              rules:{
+                  required:true,
+                  email:{
+                      email:true
+                  },
+                  phone:{
+                      digits:true,
+                      minlength:10,
+                      maxlength:10
+                  },
+                  pass:{
+                      minlength:6
+                  },
+                  cpass:{
+                      equalTo:'#pass'
+                  }
+              },messages:{
+                  fname:{
+                      required:'Please enter first name'
+                  },
+                  lname:{
+                      required:'Please enter last name'
+                  },
+                  email:{
+                      required:'Please enter eamil address',
+                      email:'Please enter valid email'
+                  },
+                  phone:{
+                      required:'Please enter phone number',
+                      digits:'Please enter number only',
+                      minlength:'Please enter valid number',
+                      maxlength:'You have acceed the length of number'
+                  },
+                  pass:{
+                      required:'Please enter password',
+                      minlength:'Please enter atleat 6 charector'
+                  },
+                  cpass:{
+                      required:'Please confirm password',
+                      equalTo:'Confirm password should be same as password'
+                  }
+              },submitHandler:function(form,e){
+                  $('.spinner-grow').css("display","inline-block");
+                  var reg_fname = $('.register input[name=fname]').val();
+                  var reg_lname = $('.register input[name=lname]').val();
+                  var reg_email = $('.register input[name=email]').val();
+                  var reg_phone = $('.register input[name=phone]').val();
+                  var reg_pass = $('.register input[name=pass]').val(); 
+
+                  var data = {
+                      request_type:"register",
+                      fname:reg_fname,
+                      lname:reg_lname,
+                      email:reg_email,
+                      phone:reg_phone,
+                      pass:reg_pass      
+                  }
+                  var json_reg = JSON.stringify(data);
+
+                  $.ajax({  
+                      url: API_URL+'register.php',   
+                      method:'POST',   
+                      data:json_reg,
+                      contentType: 'application/json',
+                      success: function(data) {   
+                          var reg_data =  JSON.parse(data);  
+                          if(reg_data.status=='200'){ 
+                            $('.spinner-grow').css("display","none");
+                            $('.register')[0].reset(); 
+                            $('.result').html('<p class="text-success">Successfully register with us!</p>');
+                          }else if(reg_data.status=='403'){ 
+                            $('.spinner-grow').css("display","none"); 
+                            // $('.register')[0].reset(); 
+                            $('.result').html('<p class="text-danger">Email already exit!</p>');
+                          }else{  
+                            $('.spinner-grow').css("display","none");
+                            $('.result').html('<p class="text-danger">Something wents wrong!</p>');
+                          }
+                          
+                      },
+                      error: function(error) {  
+                          console.log('Error in Database');  
+                      } 
+                  });
+              }
+          }); 
         </script>
 
     </body>

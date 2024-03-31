@@ -322,11 +322,11 @@ li a {
     background-color: #1f1f39;
     color: #fff; 
 }
-a.btn:hover {
+a.btn:hover,button.btn:hover {
     border: 1px solid #f23e14;
     color: #f23e14;
 }
-a.btn {
+a.btn,button.btn {
     background: #f23e14;
     color: #fff;
     border: 1px solid #f23e14;
@@ -335,6 +335,13 @@ a.btn {
 }
 a.addToCart.btn:hover i {
     color: #f23e14;
+}
+label.error {
+    color: red;
+    font-size: 12px;
+}
+.spinner-grow {
+    display: none;
 }
 
 /* ========= Product Page ========== */

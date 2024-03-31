@@ -51,7 +51,7 @@ function header(){
                 <i class="fa fa-remove search-close"></i>\
             </div>\
         </div>\
-        <form class="row search-box" method="POST">\
+        <form class="row search-box" method="GET" action="search.html">\
           <div class="col-12 shadow d-flex p-3 mt-2 border bg-white">\
               <input type="text" name="searchItem" class="w-100 border border-secondary shadow-none" required>\
               <button class="btn searchBtn" type="submit" name="submit"><i class="fa fa-search"></i></button>\
@@ -359,7 +359,7 @@ $(function() {
 $(function() {    
   var urlParams = new URLSearchParams(window.location.search);
   var cat_name = urlParams.get('cat-name');
-  console.log("cat name",cat_name);
+  // console.log("cat name",cat_name);
   var pro_detail = {
           request_type:"getProducts", 
           cat_name:cat_name     
@@ -371,9 +371,9 @@ $(function() {
       data:json_str,
       contentType: 'application/json',
       success: function(data) {   
-          var res_data =  JSON.parse(data);
-           
-          $.each(res_data.data,function(index,item){   
+        var res_data =  JSON.parse(data);
+        if(res_data.status == 200){ 
+          $.each(res_data.data,function(index,item){  
             if(item.regular_price > 0 && item.sale_price > 0){
               $('#all-product').append(
                   '<li class="col-6 my-3">\
@@ -387,16 +387,17 @@ $(function() {
                           <a href="product-detail.html?pro-id='+item.product_id+'">\
                             <p>'+item.product_name+'</p>\
                           </a>\
-                          <p><b>Cat:</b> '+item.categories+'</p>\
+                          <p class="mt-3"><b>Cat:</b> '+item.categories+'</p>\
                           <span class="sale">&#8377; '+item.regular_price+'</span>\
                           <span>&#8377; '+item.sale_price+'</span>\
                       </div>\
                   </li>'
-              );  
-            } else {
-              $('.noRecord').append('No Product Found!');
-            }
+              ); 
+            } 
           })
+        } else {
+          $('.noRecord').append('No Product Found!');
+        }
       },  
       error: function(xhr, textStatus, errorThrown) {  
           console.log('Error in Database');  
@@ -516,10 +517,9 @@ $(function() {
       });  
     });  
 
-/* ================================= Cart Quantity =================================== */
-// $(document).ready(function() {
-  $('.minus').click(function () {
-    alert();
+/* ================================= Cart Quantity =================================== */ 
+  $('body').on('click','.minus',function () {  
+    console.log("minus");
     var input = $(this).parent().find('input');
     var count = parseInt(input.val()) - 1;
     count = count < 1 ? 1 : count;
@@ -527,13 +527,14 @@ $(function() {
     input.change();
     return false;
   });
-  $('.plus').click(function () {
+
+  $('body').on('click','.plus',function () {
+    console.log("plus");
     var input = $(this).parent().find('input');
     input.val(parseInt(input.val()) + 1);
     input.change();
     return false;
   });
-// });
 
 /* ================================= Product Category Select =================================== */
 // $(function() {  
@@ -581,56 +582,7 @@ $('body').on('click','.search-close',function(){
 
 
 /* ================================= Search Product =================================== */
-$('body').on('submit','.search-box',function(e){
-  e.preventDefault();
-  var searchItem = $('.search-box input[name=searchItem').val();
-  
-    var pro_detail = {
-            request_type:"getProducts", 
-            search_item:searchItem     
-        }
-    var json_str = JSON.stringify(pro_detail); 
-   
-    $.ajax({  
-      url: API_URL+'getProducts.php',   
-      method:'POST',   
-      data:json_str,
-      contentType: 'application/json',
-      success: function(data) {   
-          var res_data =  JSON.parse(data);    
-           
-          if(res_data.status == '200'){
-            // console.log("res_data",res_data.data);
-            location.href = "search.html" 
-            $.each(res_data.data,function(index,item){
-              $('#search-prod-page').append(
-                  '<li class="col-6 my-3">\
-                      <div class="img-box">\
-                          <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon">\
-                          <a href="product-detail.html?pro-id='+item.product_id+'">\
-                          <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
-                          </a>\
-                      </div>\
-                      <div class="text-box">\
-                          <a href="product-detail.html?pro-id='+item.product_id+'">\
-                          <p>'+item.product_name+'</p>\
-                          </a>\
-                          <span class="sale">&#8377; '+item.regular_price+'</span>\
-                          <span>&#8377; '+item.sale_price+'</span>\
-                      </div>\
-                  </li>'
-              );   
-            })
-          } else{
-            location.href = "search.html" 
-            $('.no-data').append('<p>No Record Found!</p>');  
-          }  
-      },  
-      error: function(xhr, textStatus, errorThrown) {  
-          console.log('Error in Database');  
-      }  
-  }); 
-})
+
 // $('body').on('submit','.search-box .btn',function(e){
   // $("form.search-box").submit(function() { 
   // e.preventDefault();  

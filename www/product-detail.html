@@ -56,6 +56,8 @@
         <script src="js/jquery.validate.min.js"></script> 
         <script src="js/custom.js"></script> 
         <script> 
+            header();
+
             $(function() {   
                 var pathname = window.location.pathname; // Returns path only (/path/example.html)
                 var url      = window.location.href;     // Returns full URL (https://example.com/path/example.html)
@@ -101,11 +103,7 @@
                         console.log('Error in Database');  
                     }  
                 });  
-            });  
-
-
-           
-            header();
+            });      
         </script>
 
     </body>

@@ -24,8 +24,8 @@
                     </div>
                 </div>
                 <div class="col-12"> 
-                    <ul class="list-unstyled" id="search-prod-page"></ul>
-                    <div class="no-data"></div>
+                    <ul class="row list-unstyled" id="search-prod-page"></ul>
+                    <div class="no-data text-center"></div>
                 </div> 
             </div>
         </div>
@@ -38,6 +38,56 @@
         <script src="js/custom.js"></script> 
         <script> 
             header();
+
+            
+            var urlParams = new URLSearchParams(window.location.search);
+            var searchItem = urlParams.get('searchItem'); 
+            
+                var pro_detail = {
+                        request_type:"getProducts", 
+                        search_item:searchItem     
+                    }
+                var json_str = JSON.stringify(pro_detail); 
+            
+                $.ajax({  
+                url: API_URL+'getProducts.php',   
+                method:'POST',   
+                data:json_str,
+                contentType: 'application/json',
+                success: function(data) {   
+                    var res_data =  JSON.parse(data);    
+                    
+                    if(res_data.status == '200'){
+                        console.log("res_data",res_data.data);
+                        // location.href = "search.html" 
+                        $.each(res_data.data,function(index,item){
+                            $('#search-prod-page').append(
+                                '<li class="col-6 my-3">\
+                                    <div class="img-box">\
+                                        <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon">\
+                                        <a href="product-detail.html?pro-id='+item.product_id+'">\
+                                        <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
+                                        </a>\
+                                    </div>\
+                                    <div class="text-box">\
+                                        <a href="product-detail.html?pro-id='+item.product_id+'">\
+                                        <p>'+item.product_name+'</p>\
+                                        </a>\
+                                        <span class="sale">&#8377; '+item.regular_price+'</span>\
+                                        <span>&#8377; '+item.sale_price+'</span>\
+                                    </div>\
+                                </li>'
+                            );   
+                        })
+                    } else{ 
+                        $('.no-data').append('<p>No Record Found!</p>');  
+                    }  
+                },  
+                error: function(xhr, textStatus, errorThrown) {  
+                    console.log('Error in Database');  
+                }  
+            }); 
+            // })
         </script>
 
     </body>

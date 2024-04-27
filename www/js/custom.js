@@ -28,11 +28,7 @@ function header(){
                   Wishlist\
               </a>\
           </li> \
-          <li class="nav-item">\
-              <a class="nav-link" href="/login.html">\
-                  <i class="fa-solid fa-user"></i>\
-                  Login\
-              </a>\
+          <li class="nav-item login">\
           </li> \
       </ul> \
     </nav>\
@@ -170,55 +166,7 @@ function header(){
             </div>\
             <div class="col-12">\
               <form>\
-                <ul class="list-unstyled mt-4">\
-                    <li>\
-                        <div class="row cart-box border-top py-4">\
-                            <div class="col-4">\
-                                <img class="rounded" src="images/cart1.png" alt="Cart Image">\
-                            </div>\
-                            <div class="col-8">\
-                                <h3><b>Black Jacket</b></h3>\
-                                <p class="m-0">Black | S</p>\
-                                <p><b>&#8377;500.00</b></p>\
-                                <div class="row">\
-                                    <div class="col-8">\
-                                        <div class="number">\
-                                            <span class="minus"><i class="fa-regular fa-square-minus"></i></span>\
-                                            <input class="text-center" type="text" value="1"/>\
-                                            <span class="plus"><i class="fa-regular fa-square-plus"></i></span>\
-                                        </div>\
-                                    </div>\
-                                    <div class="col-4 text-end">\
-                                        <i class="fa fa-trash"></i>\
-                                    </div>\
-                                </div>\
-                            </div> \
-                        </div>\
-                    </li>\
-                    <li>\
-                        <div class="row cart-box border-top py-4">\
-                            <div class="col-4">\
-                                <img class="rounded" src="images/cart2.png" alt="Cart Image">\
-                            </div>\
-                            <div class="col-8">\
-                                <h3><b>Black Jacket</b></h3>\
-                                <p class="m-0">Black | S</p>\
-                                <p><b>&#8377;700.00</b></p>\
-                                <div class="row">\
-                                    <div class="col-8">\
-                                        <div class="number">\
-                                            <span class="minus"><i class="fa-regular fa-square-minus"></i></span>\
-                                            <input class="text-center" type="text" value="1"/>\
-                                            <span class="plus"><i class="fa-regular fa-square-plus"></i></span>\
-                                        </div>\
-                                    </div>\
-                                    <div class="col-4 text-end">\
-                                        <i class="fa fa-trash"></i>\
-                                    </div>\
-                                </div>\
-                            </div>  \
-                        </div>\
-                    </li>\
+                <ul class="cart-page list-unstyled mt-4">\
                 </ul> \
                 <div class="d-flex justify-content-between border-top pt-4">\
                     <p><strong>Subtotal</strong></p>\
@@ -536,38 +484,6 @@ $(function() {
     return false;
   });
 
-/* ================================= Product Category Select =================================== */
-// $(function() {  
-//   var data = {request_type:"getProducts"}
-//   var json_str = JSON.stringify(data);
-//   $.ajax({  
-//     url: API_URL+'getProducts.php',   
-//     method:'POST',   
-//     data:json_str,
-//     contentType: 'application/json',
-//     success: function(data) {   
-//       var res_data =  JSON.parse(data);  
-//       $.each(res_data.data,function(index,item){   
-//         if(item.regular_price > 0){
-//           $('#all-product').append(
-//             '<li>\
-//               <a class="" href="product-detail.html?pro-id='+item.product_id+'">\
-//                 <img class="w-100" src="'+img_path+item.product_img1+'" alt="Product Images">\
-//                 <p>'+item.product_name+'</p> \
-//                 <div class="cart">\
-//                   <span>&#8377; '+item.regular_price+'</span>\
-//                 </div>\
-//               </a>\
-//             </li>'
-//           );
-//         } 
-//       })  
-//     },  
-//     error: function(xhr, textStatus, errorThrown) {  
-//         console.log('Error in Database');  
-//     }  
-//   });  
-// });
 /* ================================= Search Box =================================== */
 $('body').on('click','.search-open',function(){ 
   $('.search-box').css('display','block');
@@ -581,139 +497,74 @@ $('body').on('click','.search-close',function(){
 }) 
 
 
-/* ================================= Search Product =================================== */
+/* ================================= Cart Page =================================== */
+$(function() {  
+  var data = {
+    request_type:"getCartValues",
+    uemail:"anjum1@gmail.com"
+  }
+  $.ajax({  
+    url: API_URL+'addToCart.php',   
+    method:'POST',   
+    data:JSON.stringify(data),
+    header:{ 
+      "Content-Type": "application/json"
+    },
+    success: function(data) {   
+      var res_data =  JSON.parse(data); 
+      // console.log(res_data);
+      $.each(res_data.data,function(index,item){   
+        // console.log(res_data.data);
+        $('.cart-page').append(
+          '<li>\
+          <div class="row cart-box border-top py-4">\
+          <div class="col-4">\
+                    <img class="rounded" src="images/cart1.png" alt="Cart Image">\
+                    </div>\
+                    <div class="col-8">\
+                    <h3><b>Black Jacket</b></h3>\
+                    <p class="m-0">Black | S</p>\
+                    <p><b>&#8377;500.00</b></p>\
+                    <div class="row">\
+                    <div class="col-8">\
+                    <div class="number">\
+                    <span class="minus"><i class="fa-regular fa-square-minus"></i></span>\
+                                <input class="text-center" type="text" value="1"/>\
+                                <span class="plus"><i class="fa-regular fa-square-plus"></i></span>\
+                            </div>\
+                        </div>\
+                        <div class="col-4 text-end">\
+                            <i class="fa fa-trash"></i>\
+                        </div>\
+                    </div>\
+                </div> \
+            </div>\
+          </li>'
+        ); 
+      })  
+    },  
+    error: function(xhr, textStatus, errorThrown) {  
+        console.log('Error in Database');  
+    }  
+  });  
+});
 
-// $('body').on('submit','.search-box .btn',function(e){
-  // $("form.search-box").submit(function() { 
-  // e.preventDefault();  
-  // alert();
-  // exit;
-    // var searchItem = $('.search-box input[name=searchItem').val();
-    // var urlParams = new URLSearchParams(window.location.search);
-    // var cat_name = urlParams.get('cat-name');
-//     console.log("searchItem",searchItem);
 
-//     var pro_detail = {
-//             request_type:"getProducts", 
-//             search_item:searchItem     
-//         }
-//     var json_str = JSON.stringify(pro_detail); 
-//     $.ajax({  
-//         url: API_URL+'getProducts.php',   
-//         method:'POST',   
-//         data:json_str,
-//         contentType: 'application/json',
-//         success: function(data) {   
-//             var res_data =  JSON.parse(data);    
-//             console.log("res_data",res_data);
-//             exit;
-//             $.each(res_data.data,function(index,item){  
-//                 $('#cat-product').append(
-//                     '<div class="col-6 my-3">\
-//                         <div class="img-box">\
-//                             <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon">\
-//                             <a href="product-detail.html?pro-id='+item.product_id+'">\
-//                             <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
-//                             </a>\
-//                         </div>\
-//                         <div class="text-box">\
-//                             <a href="product-detail.html?pro-id='+item.product_id+'">\
-//                             <p>'+item.product_name+'</p>\
-//                             </a>\
-//                             <span class="sale">&#8377; '+item.regular_price+'</span>\
-//                             <span>&#8377; '+item.sale_price+'</span>\
-//                         </div>\
-//                     </div>'
-//                 );   
-//             })
-//         },  
-//         error: function(xhr, textStatus, errorThrown) {  
-//             console.log('Error in Database');  
-//         }  
-//     });  
-// });  
-
-// $('.search-box').validate({
-//   rules:{
-//       required:true,
-//   },messages:{
-//     searchItem:{
-//           required:'Please enter search value'
-//       }
-//   },submitHandler:function(form,e){
-//     e.preventDefault();
-//     var searchItem = $('.search-box input[name=searchItem]').val(); 
-//     alert(searchItem);
-//     var pro_detail = {
-//       request_type:"getProducts", 
-//       search_item:searchItem     
-//     }
-//     var json_str = JSON.stringify(pro_detail); 
-//     $.ajax({  
-//         url: API_URL+'getProducts.php',   
-//         method:'POST',   
-//         data:json_str,
-//         contentType: 'application/json',
-//         success: function(data) {   
-//             var res_data =  JSON.parse(data);    
-//             console.log("res_data",res_data);
-//             exit;
-//             $.each(res_data.data,function(index,item){  
-//                 $('#cat-product').append(
-//                     '<div class="col-6 my-3">\
-//                         <div class="img-box">\
-//                             <img class="wishlist-icon" src="images/heart-regular.svg" alt="Icon">\
-//                             <a href="product-detail.html?pro-id='+item.product_id+'">\
-//                             <img class="w-100" src="'+img_path+item.product_img1+'" alt="Image">\
-//                             </a>\
-//                         </div>\
-//                         <div class="text-box">\
-//                             <a href="product-detail.html?pro-id='+item.product_id+'">\
-//                             <p>'+item.product_name+'</p>\
-//                             </a>\
-//                             <span class="sale">&#8377; '+item.regular_price+'</span>\
-//                             <span>&#8377; '+item.sale_price+'</span>\
-//                         </div>\
-//                     </div>'
-//                 );   
-//             })
-//         },  
-//         error: function(xhr, textStatus, errorThrown) {  
-//             console.log('Error in Database');  
-//         }  
-//     });
-//     // var search_detail = {
-//     //   request_type:"search",
-//     //   search_item:searchItem
-//     // }
-//     // var json_str = JSON.stringify(search_detail);
-//     // $.ajax({  
-//     //   url: API_URL+'search.php',   
-//     //   method:'POST',   
-//     //   data:json_str,
-//     //   contentType: 'application/json',
-//     //   success: function(data) {   
-//     //     var res_data =  JSON.parse(data);  
-//     //     console.log("res_data",res_data);
-//     //     $.each(res_data.data,function(index,item){   
-//     //       if(item.regular_price > 0){
-//     //         $('#search-prod-page').append(
-//     //           '<li>\
-//     //             <a class="" href="product-detail.html?pro-id='+item.product_id+'">\
-//     //               <img class="w-100" src="'+img_path+item.product_img1+'" alt="Product Images">\
-//     //               <p>'+item.product_name+'</p> \
-//     //               <div class="cart">\
-//     //                 <span>&#8377; '+item.regular_price+'</span>\
-//     //               </div>\
-//     //             </a>\
-//     //           </li>'
-//     //         );
-//     //       } 
-//     //     })  
-//     //   },  
-//     //   error: function(xhr, textStatus, errorThrown) {  
-//     //       console.log('Error in Database');  
-//     //   }  
-//     // }); 
-//   }
-// }); 
+/* ================================= Login =================================== */
+var userData1 = JSON.parse(localStorage.getItem('user_data'));
+// console.log(userData);
+// $('.title>span').text(userData.fname+' '+userData.lname); 
+if(userData1 !== ''){
+  console.log(userData1);
+  $('.login').append(
+    '<a class="nav-link" href=""><i class="fa-solid fa-user"></i>Profile</a>'
+  );
+}else{
+  $('.login').append(
+    '<a class="nav-link" href="/login.html"><i class="fa-solid fa-user"></i>Login</a>'
+  );
+}
+/* ================================= Logout =================================== */
+$('body').on('click','.logout',function(){
+  localStorage.removeItem("user_data");
+})

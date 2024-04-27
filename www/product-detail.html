@@ -58,11 +58,10 @@
         <script> 
             header();
 
-            $(function() {   
-                var pathname = window.location.pathname; // Returns path only (/path/example.html)
-                var url      = window.location.href;     // Returns full URL (https://example.com/path/example.html)
-                var origin   = window.location.origin; // Returns base origin https://example.com
-                var pro_id = url.substring(url.lastIndexOf('=') + 1); 
+            /* ================================= Product Detail =================================== */
+            $(function() {    
+                var urlParams = new URLSearchParams(window.location.search);
+                var pro_id = urlParams.get('pro-id'); 
                 var pro_detail = {
                         request_type:"productDetail", 
                         product_id:pro_id     
@@ -87,9 +86,10 @@
                                     <div class="my-4">\
                                         <div class="number">\
                                             <span class="minus"><i class="fa-regular fa-square-minus"></i></span>\
-                                            <input class="text-center" type="text" value="1"/>\
+                                            <input class="text-center" name="cartValue" type="text" value="1"/>\
                                             <span class="plus"><i class="fa-regular fa-square-plus"></i></span>\
                                         </div>\
+                                        <p class="result"></p>\
                                     </div>\
                                     <p><b>Description:</b> '+res_data.data.long_desc+'</p>\
                                     <div class="d-flex justify-content-between">\
@@ -103,7 +103,40 @@
                         console.log('Error in Database');  
                     }  
                 });  
-            });      
+            });    
+            
+            /* ================================= Add To Cart =================================== */
+            $('body').on('click','.addToCart',function(e){
+                e.preventDefault();
+                var cart_pro_id = $(this).attr('data-pro_id');
+                var cart_qty = $('.number input[name=cartValue]').val(); 
+
+                var cart_detail = {
+                        request_type:"addToCart", 
+                        addtocart_pro_id:cart_pro_id,
+                        uemail:"anjum1@gmail.com",
+                        qty:cart_qty
+                    }
+                   
+                var json_str = JSON.stringify(cart_detail);
+                $.ajax({  
+                    url: API_URL+'addToCart.php',   
+                    method:'POST',   
+                    data:json_str,
+                    contentType: 'application/json',
+                    success: function(data) {   
+                        var res_data =  JSON.parse(data);   
+                        if(res_data.status == 200){
+                            $('.result').html('<p class="text-success">'+res_data.msg+'</p>');
+                        }else{
+                            $('.result').html('<p class="text-danger">Something wents wrong!</p>');
+                        }
+                    },  
+                    error: function(xhr, textStatus, errorThrown) {  
+                        console.log('Error in Database');  
+                    }  
+                });  
+            });
         </script>
 
     </body>

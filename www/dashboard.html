@@ -17,7 +17,7 @@
         <div class="container login-page">
             <div class="row"> 
                 <div class="col-12 mt-5">  
-                    <h1 class="title text-center">Welcome</h1>
+                    <h1 class="title text-center">Welcome <span>Name</span></h1>
                     
                 </div> 
             </div>
@@ -31,6 +31,9 @@
         <script src="js/custom.js"></script> 
         <script> 
             header(); 
+
+            var userData = JSON.parse(localStorage.getItem('user_data'));
+            $('.title>span').text(userData.fname+' '+userData.lname);
         </script>
 
     </body>

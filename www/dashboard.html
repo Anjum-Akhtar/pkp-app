@@ -12,13 +12,15 @@
         <title>PKP APP</title>
     </head>
     <body>
+        <script>
+            
+        </script>
         <div class="header"></div> 
 
         <div class="container login-page">
             <div class="row"> 
                 <div class="col-12 mt-5">  
                     <h1 class="title text-center">Welcome <span>Name</span></h1>
-                    
                 </div> 
             </div>
         </div>
@@ -30,11 +32,19 @@
         <script src="js/jquery.validate.min.js"></script> 
         <script src="js/custom.js"></script> 
         <script> 
-            header(); 
-
-            var userData = JSON.parse(localStorage.getItem('user_data'));
-            $('.title>span').text(userData.fname+' '+userData.lname);
+            header();  
+            $(function() {
+                var userData = JSON.parse(localStorage.getItem('user_data')); 
+                if(userData !== '' && userData !== null){ 
+                    $('.title>span').text(userData.fname+' '+userData.lname);
+                }else{ 
+                    window.location.href = "/login.html";
+                }
+            }); 
+             
         </script>
 
     </body>
 </html>
+
+<!-- data str Java -->

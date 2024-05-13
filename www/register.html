@@ -60,7 +60,14 @@
         <script src="js/jquery.validate.min.js"></script> 
         <script src="js/custom.js"></script> 
         <script> 
-            header();
+            // header();
+
+            $(function() {
+                var userData = JSON.parse(localStorage.getItem('user_data')); 
+                if(userData !== '' && userData !== null){ 
+                    window.location.href = "/dashboard.html";
+                }
+            });
 
             /* ================================= Register =================================== */
             $('.register').validate({

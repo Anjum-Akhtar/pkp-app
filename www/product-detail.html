@@ -108,16 +108,17 @@
             /* ================================= Add To Cart =================================== */
             $('body').on('click','.addToCart',function(e){
                 e.preventDefault();
+                var userData = JSON.parse(localStorage.getItem('user_data'));
                 var cart_pro_id = $(this).attr('data-pro_id');
                 var cart_qty = $('.number input[name=cartValue]').val(); 
 
                 var cart_detail = {
-                        request_type:"addToCart", 
-                        addtocart_pro_id:cart_pro_id,
-                        uemail:"anjum1@gmail.com",
+                        request_type: "addToCart", 
+                        addtocart_pro_id: cart_pro_id,
+                        uemail: userData.email,
                         qty:cart_qty
-                    }
-                   
+                }
+                // console.log("cart_detail ", cart_detail);
                 var json_str = JSON.stringify(cart_detail);
                 $.ajax({  
                     url: API_URL+'addToCart.php',   

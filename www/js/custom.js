@@ -1,4 +1,4 @@
-const img_path = "https://fluentdecor.com/admin/images/";
+const img_path = "https://app.anjum.dev/images/";
 const API_URL = "https://app.anjum.dev/";
 /* ============================ Header ================================= */
 function header(){
@@ -28,7 +28,7 @@ function header(){
                   Wishlist\
               </a>\
           </li> \
-          <li class="nav-item login">\
+          <li class="nav-item loginMenu">\
           </li> \
       </ul> \
     </nav>\
@@ -152,6 +152,13 @@ function header(){
                   </div>\
                 </div>\
             </div>\
+            <div class="col-12 pt-3 open-profile">\
+              <ul class="list-unstyled px-2 menu-items">\
+                <li>\
+                    <a class="logout" href="/">logout</a>\
+                </li>\
+              </ul>\
+            </div>\
         </div>\
     </div>\
     <div class="cart-toggle position-fixed p-4" style="right:-100%">\
@@ -237,39 +244,51 @@ const swiper = new Swiper(".swiper-slider", {
   
 
   /* ============================ Mobile Menu / Category Menu / Cart Menu ============================== */
-  $('body').on('click','.open-menu',function(e){ 
-    e.preventDefault();
-    $('.menu-toggle').css("left", "0%"); 
-    $('.menu-overlay').css("display", "block"); 
-    $('.cat-side-menu').css("display", "none");
-  });
-  $('body').on('click','.menu-overlay',function(e){
-    e.preventDefault();
-    $('.menu-toggle').css("left", "-90%"); 
-    $('.menu-overlay').css("display", "none");
-    $('.cat-side-menu').css("display", "block");
-    $('.mobile-side-menu').css("display", "block");
-  });
+    $('body').on('click','.open-menu',function(e){ 
+      e.preventDefault();
+      $('.menu-toggle').css("left", "0%"); 
+      $('.menu-overlay').css("display", "block"); 
+      $('.cat-side-menu').css("display", "none");
+      $('.open-profile').css("display", "none");
+    });
+    $('body').on('click','.menu-overlay',function(e){
+      e.preventDefault();
+      $('.menu-toggle').css("left", "-90%"); 
+      $('.menu-overlay').css("display", "none");
+      $('.cat-side-menu').css("display", "block");
+      $('.mobile-side-menu').css("display", "block");
+      $('.open-profile').css("display", "block");
+    });
   /******************* Category Menu *******************/
-  $('body').on('click','.cat-menu',function(e){ 
-    e.preventDefault();
-    $('.menu-toggle').css("left", "0%"); 
-    $('.menu-overlay').css("display", "block"); 
-    $('.mobile-side-menu').css("display", "none"); 
-  });
+    $('body').on('click','.cat-menu',function(e){ 
+      e.preventDefault();
+      $('.menu-toggle').css("left", "0%"); 
+      $('.menu-overlay').css("display", "block"); 
+      $('.mobile-side-menu').css("display", "none"); 
+      $('.open-profile').css("display", "none"); 
+    });
+
+  /******************* Profile Menu *******************/
+    $('body').on('click','.open-profile',function(e){ 
+      e.preventDefault();
+      $('.menu-toggle').css("left", "0%"); 
+      $('.menu-overlay').css("display", "block"); 
+      $('.mobile-side-menu').css("display", "none"); 
+      $('.cat-side-menu').css("display", "none");
+    });
+
   /******************* Cart Menu *******************/
-  $('body').on('click','.cart-icon',function(e){ 
-    e.preventDefault();
-    $('.cart-toggle').css("right", "0%");  
-    $('.menu-overlay').css("display", "block"); 
-  });
+    $('body').on('click','.cart-icon',function(e){ 
+      e.preventDefault();
+      $('.cart-toggle').css("right", "0%");  
+      $('.menu-overlay').css("display", "block"); 
+    });
 
-  $('body').on('click','.menu-overlay,.close-menu',function(e){
-    e.preventDefault();
-    $('.cart-toggle').css("right", "-100%"); 
-    $('.menu-overlay').css("display", "none"); 
-  });
-
+    $('body').on('click','.menu-overlay,.close-menu',function(e){
+      e.preventDefault();
+      $('.cart-toggle').css("right", "-100%"); 
+      $('.menu-overlay').css("display", "none"); 
+    });
 
 /* ================================= Get Category Home =================================== */
 $(function() {  
@@ -467,7 +486,7 @@ $(function() {
 
 /* ================================= Cart Quantity =================================== */ 
   $('body').on('click','.minus',function () {  
-    console.log("minus");
+    // console.log("minus");
     var input = $(this).parent().find('input');
     var count = parseInt(input.val()) - 1;
     count = count < 1 ? 1 : count;
@@ -477,12 +496,42 @@ $(function() {
   });
 
   $('body').on('click','.plus',function () {
-    console.log("plus");
+    // console.log("plus");
     var input = $(this).parent().find('input');
     input.val(parseInt(input.val()) + 1);
     input.change();
     return false;
   });
+
+/* ============================== Remove Cart Value =============================== */
+$('body').on('click','.dlt-cart',function () {  
+  var userData = JSON.parse(localStorage.getItem('user_data'));
+  var cart_pro_id = $(this).attr('data-pro_id');
+  var cart_remove_item = {
+    request_type: "deleteCart", 
+    addtocart_pro_id: cart_pro_id,
+    uemail: userData.email
+  } 
+  var json_str = JSON.stringify(cart_remove_item);
+  $.ajax({  
+    url: API_URL+'addToCart.php',   
+    method:'POST',   
+    data:json_str,
+    contentType: 'application/json',
+    success: function(data) {   
+        var res_data =  JSON.parse(data);   
+        if(res_data.status == 200){
+            $('.result').html('<p class="text-success">'+res_data.msg+'</p>');
+            $(".cart-page").load(document.URL +  " .cart-page > *"); 
+        }else{
+            $('.result').html('<p class="text-danger">Something wents wrong!</p>');
+        }
+    },  
+    error: function(xhr, textStatus, errorThrown) {  
+        console.log('Error in Database');  
+    }  
+  }); 
+});
 
 /* ================================= Search Box =================================== */
 $('body').on('click','.search-open',function(){ 
@@ -499,9 +548,10 @@ $('body').on('click','.search-close',function(){
 
 /* ================================= Cart Page =================================== */
 $(function() {  
+  var userData = JSON.parse(localStorage.getItem('user_data'));
   var data = {
     request_type:"getCartValues",
-    uemail:"anjum1@gmail.com"
+    uemail: userData.email
   }
   $.ajax({  
     url: API_URL+'addToCart.php',   
@@ -519,21 +569,21 @@ $(function() {
           '<li>\
           <div class="row cart-box border-top py-4">\
           <div class="col-4">\
-                    <img class="rounded" src="images/cart1.png" alt="Cart Image">\
-                    </div>\
-                    <div class="col-8">\
-                    <h3><b>Black Jacket</b></h3>\
-                    <p class="m-0">Black | S</p>\
-                    <p><b>&#8377;500.00</b></p>\
-                    <div class="row">\
-                    <div class="col-8">\
-                    <div class="number">\
-                    <span class="minus"><i class="fa-regular fa-square-minus"></i></span>\
+              <img class="rounded" src="images/cart1.png" alt="Cart Image">\
+              </div>\
+              <div class="col-8">\
+              <h3><b>'+item.product_name+'</b></h3>\
+              <p class="m-0">Black | S</p>\
+              <p><b>&#8377;'+item.pro_id+'</b></p>\
+              <div class="row">\
+              <div class="col-8">\
+              <div class="number">\
+                      <span class="minus"><i class="fa-regular fa-square-minus"></i></span>\
                                 <input class="text-center" type="text" value="1"/>\
                                 <span class="plus"><i class="fa-regular fa-square-plus"></i></span>\
                             </div>\
                         </div>\
-                        <div class="col-4 text-end">\
+                        <div class="col-4 text-end dlt-cart" data-pro_id="'+item.pro_id+'">\
                             <i class="fa fa-trash"></i>\
                         </div>\
                     </div>\
@@ -551,20 +601,22 @@ $(function() {
 
 
 /* ================================= Login =================================== */
-var userData1 = JSON.parse(localStorage.getItem('user_data'));
-// console.log(userData);
-// $('.title>span').text(userData.fname+' '+userData.lname); 
-if(userData1 !== ''){
-  console.log(userData1);
-  $('.login').append(
-    '<a class="nav-link" href=""><i class="fa-solid fa-user"></i>Profile</a>'
-  );
-}else{
-  $('.login').append(
-    '<a class="nav-link" href="/login.html"><i class="fa-solid fa-user"></i>Login</a>'
-  );
-}
+$(function() {
+  var userData1 = JSON.parse(localStorage.getItem('user_data')); 
+  if(userData1 !== '' && userData1 !== null){ 
+    // console.log(userData1);
+    $('.loginMenu').append(
+      '<a class="nav-link open-profile" href=""><i class="fa-solid fa-user"></i>Profile</a>'
+    );
+  }else{ 
+    // console.log("jb");
+    $('.loginMenu').append(
+      '<a class="nav-link" href="/login.html"><i class="fa-solid fa-user"></i>Login</a>'
+    );
+  }
+});
 /* ================================= Logout =================================== */
 $('body').on('click','.logout',function(){
   localStorage.removeItem("user_data");
+  window.location.href = "/login.html";
 })

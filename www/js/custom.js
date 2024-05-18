@@ -18,7 +18,7 @@ function header(){
               </a>\
           </li>\
           <li class="nav-item cart-bag">\
-              <a class="nav-link cart-icon" href="#">\
+              <a class="nav-link cart-icon" href="/add-to-cart.html">\
                   <i class="fa-solid fa-bag-shopping"></i>\
               </a>\
           </li> \
@@ -278,17 +278,17 @@ const swiper = new Swiper(".swiper-slider", {
     });
 
   /******************* Cart Menu *******************/
-    $('body').on('click','.cart-icon',function(e){ 
-      e.preventDefault();
-      $('.cart-toggle').css("right", "0%");  
-      $('.menu-overlay').css("display", "block"); 
-    });
+    // $('body').on('click','.cart-icon',function(e){ 
+    //   e.preventDefault();
+    //   $('.cart-toggle').css("right", "0%");  
+    //   $('.menu-overlay').css("display", "block"); 
+    // });
 
-    $('body').on('click','.menu-overlay,.close-menu',function(e){
-      e.preventDefault();
-      $('.cart-toggle').css("right", "-100%"); 
-      $('.menu-overlay').css("display", "none"); 
-    });
+    // $('body').on('click','.menu-overlay,.close-menu',function(e){
+    //   e.preventDefault();
+    //   $('.cart-toggle').css("right", "-100%"); 
+    //   $('.menu-overlay').css("display", "none"); 
+    // });
 
 /* ================================= Get Category Home =================================== */
 $(function() {  
@@ -484,54 +484,6 @@ $(function() {
       });  
     });  
 
-/* ================================= Cart Quantity =================================== */ 
-  $('body').on('click','.minus',function () {  
-    // console.log("minus");
-    var input = $(this).parent().find('input');
-    var count = parseInt(input.val()) - 1;
-    count = count < 1 ? 1 : count;
-    input.val(count);
-    input.change();
-    return false;
-  });
-
-  $('body').on('click','.plus',function () {
-    // console.log("plus");
-    var input = $(this).parent().find('input');
-    input.val(parseInt(input.val()) + 1);
-    input.change();
-    return false;
-  });
-
-/* ============================== Remove Cart Value =============================== */
-$('body').on('click','.dlt-cart',function () {  
-  var userData = JSON.parse(localStorage.getItem('user_data'));
-  var cart_pro_id = $(this).attr('data-pro_id');
-  var cart_remove_item = {
-    request_type: "deleteCart", 
-    addtocart_pro_id: cart_pro_id,
-    uemail: userData.email
-  } 
-  var json_str = JSON.stringify(cart_remove_item);
-  $.ajax({  
-    url: API_URL+'addToCart.php',   
-    method:'POST',   
-    data:json_str,
-    contentType: 'application/json',
-    success: function(data) {   
-        var res_data =  JSON.parse(data);   
-        if(res_data.status == 200){
-            $('.result').html('<p class="text-success">'+res_data.msg+'</p>');
-            $(".cart-page").load(document.URL +  " .cart-page > *"); 
-        }else{
-            $('.result').html('<p class="text-danger">Something wents wrong!</p>');
-        }
-    },  
-    error: function(xhr, textStatus, errorThrown) {  
-        console.log('Error in Database');  
-    }  
-  }); 
-});
 
 /* ================================= Search Box =================================== */
 $('body').on('click','.search-open',function(){ 
@@ -543,62 +495,26 @@ $('body').on('click','.search-close',function(){
   $('.search-box').css('display','none');
   $('.search-close').css('display','none');
   $('.search-open').css('display','block');
-}) 
+})
 
-
-/* ================================= Cart Page =================================== */
-$(function() {  
-  var userData = JSON.parse(localStorage.getItem('user_data'));
-  var data = {
-    request_type:"getCartValues",
-    uemail: userData.email
-  }
-  $.ajax({  
-    url: API_URL+'addToCart.php',   
-    method:'POST',   
-    data:JSON.stringify(data),
-    header:{ 
-      "Content-Type": "application/json"
-    },
-    success: function(data) {   
-      var res_data =  JSON.parse(data); 
-      // console.log(res_data);
-      $.each(res_data.data,function(index,item){   
-        // console.log(res_data.data);
-        $('.cart-page').append(
-          '<li>\
-          <div class="row cart-box border-top py-4">\
-          <div class="col-4">\
-              <img class="rounded" src="images/cart1.png" alt="Cart Image">\
-              </div>\
-              <div class="col-8">\
-              <h3><b>'+item.product_name+'</b></h3>\
-              <p class="m-0">Black | S</p>\
-              <p><b>&#8377;'+item.pro_id+'</b></p>\
-              <div class="row">\
-              <div class="col-8">\
-              <div class="number">\
-                      <span class="minus"><i class="fa-regular fa-square-minus"></i></span>\
-                                <input class="text-center" type="text" value="1"/>\
-                                <span class="plus"><i class="fa-regular fa-square-plus"></i></span>\
-                            </div>\
-                        </div>\
-                        <div class="col-4 text-end dlt-cart" data-pro_id="'+item.pro_id+'">\
-                            <i class="fa fa-trash"></i>\
-                        </div>\
-                    </div>\
-                </div> \
-            </div>\
-          </li>'
-        ); 
-      })  
-    },  
-    error: function(xhr, textStatus, errorThrown) {  
-        console.log('Error in Database');  
-    }  
-  });  
+ /* ================================= Cart Quantity =================================== */ 
+ $('body').on('click','.minus',function () {  
+  // console.log("minus");
+  var input = $(this).parent().find('input');
+  var count = parseInt(input.val()) - 1;
+  count = count < 1 ? 1 : count;
+  input.val(count);
+  input.change();
+  return false;
 });
 
+$('body').on('click','.plus',function () {
+  // console.log("plus");
+  var input = $(this).parent().find('input');
+  input.val(parseInt(input.val()) + 1);
+  input.change();
+  return false;
+});
 
 /* ================================= Login =================================== */
 $(function() {

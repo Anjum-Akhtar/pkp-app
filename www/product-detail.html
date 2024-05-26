@@ -49,7 +49,9 @@
             </div>
         </div>
 
-
+        <div class="loaderDiv">
+            <div class="loader"></div>
+        </div>
         <script src="js/jquery-3.7.1.min.js"></script> 
         <script src="js/bootstrap.bundle.min.js"></script> 
         <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script> 
@@ -85,9 +87,9 @@
                                     <span>&#8377; '+res_data.data.sale_price+'</span>\
                                     <div class="my-4">\
                                         <div class="number">\
-                                            <span class="minus"><i class="fa-regular fa-square-minus"></i></span>\
+                                            <span class="minus"><i class="fa fa-minus"></i></span>\
                                             <input class="text-center" name="cartValue" type="text" value="1"/>\
-                                            <span class="plus"><i class="fa-regular fa-square-plus"></i></span>\
+                                            <span class="plus"><i class="fa fa-plus"></i></span>\
                                         </div>\
                                         <p class="result"></p>\
                                     </div>\
@@ -108,10 +110,15 @@
             /* ================================= Add To Cart =================================== */
             $('body').on('click','.addToCart',function(e){
                 e.preventDefault();
+                $('.loaderDiv').show();
                 var userData = JSON.parse(localStorage.getItem('user_data'));
-                var cart_pro_id = $(this).attr('data-pro_id');
-                var cart_qty = $('.number input[name=cartValue]').val(); 
-
+                var cart_pro_id = $(this).attr('data-pro_id'); 
+                if($('.number input[name=cartValue]').val > 1){
+                    var cart_qty = $('.number input[name=cartValue]').val( parseInt($('.number input[name=cartValue]').val()) + 1 );
+                }else{
+                    var cart_qty = $('.number input[name=cartValue]').val();
+                }
+                console.log("cart_qty",cart_qty);
                 var cart_detail = {
                         request_type: "addToCart", 
                         addtocart_pro_id: cart_pro_id,
@@ -128,6 +135,7 @@
                     success: function(data) {   
                         var res_data =  JSON.parse(data);   
                         if(res_data.status == 200){
+                            $('.loaderDiv').hide();
                             $('.result').html('<p class="text-success">'+res_data.msg+'</p>');
                         }else{
                             $('.result').html('<p class="text-danger">Something wents wrong!</p>');

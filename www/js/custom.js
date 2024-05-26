@@ -536,3 +536,113 @@ $('body').on('click','.logout',function(){
   localStorage.removeItem("user_data");
   window.location.href = "/login.html";
 })
+
+/* ================================= Cart Page =================================== */
+getCartDetails();
+function getCartDetails(){
+  var userData = JSON.parse(localStorage.getItem('user_data'));
+  var data = {
+      request_type:"getCartValues",
+      uemail: userData.email
+  }
+  $.ajax({  
+      url: API_URL+'addToCart.php',   
+      method:'POST',   
+      data:JSON.stringify(data),
+      header:{ 
+      "Content-Type": "application/json"
+      },
+      success: function(data) {   
+          var res_data =  JSON.parse(data);  
+          if(res_data.data){
+            $.each(res_data.data,function(index,item){  
+              var price;
+              if(item.sale_price != ''){
+                price = item.sale_price;
+              } else {
+                price = item.regular_price;
+              }
+                $('.cart-page').append(
+                '<li>\
+                    <div class="row cart-box border-top py-4">\
+                        <div class="col-4">\
+                            <img class="rounded" src="'+img_path+item.product_img1+'" alt="Cart Image">\
+                        </div>\
+                        <div class="col-8">\
+                            <h3><b>'+item.product_name+'</b></h3>\
+                            <p class="m-0">Black | S</p>\
+                            <p><b>&#8377;'+price+'</b></p>\
+                            <div class="row">\
+                                <div class="col-8">\
+                                    <div class="number">\
+                                        <span class="minus"><i class="fa fa-minus"></i></span>\
+                                        <input class="text-center qty_val" type="text" value="'+item.qty+'"/>\
+                                        <span class="plus"><i class="fa fa-plus"></i></span>\
+                                    </div>\
+                                </div>\
+                                <div class="col-4 text-end dlt-cart" data-pro_id="'+item.pro_id+'">\
+                                    <i class="fa fa-trash"></i>\
+                                </div>\
+                            </div>\
+                        </div> \
+                    </div>\
+                </li>'
+              );  
+            });
+            $('.subtotal').append(
+                '<strong>&#8377;'+res_data.total_price+'</strong>'
+            );
+          }else{
+            $('.result').html("<h1 class='text-center'>Your cart is empty!</h1>");
+            $('.cart-toggle .carthead').hide();
+            $('.cart-toggle .cartsub').hide();
+          }
+         
+      },  
+      error: function(xhr, textStatus, errorThrown) {  
+          console.log('Error in Database');  
+      }
+  });  
+}
+
+/* ================================= Cart Qty plus/minus =================================== */
+$('body').on('click','.cart-box .plus',function(e){
+  e.preventDefault();
+  var qty_plus = Number($('.number input.qty_val').val())+1;
+
+  console.log("qty_plus",qty_plus);
+});
+
+
+/* ================================= Cart Delate Item =================================== */
+$('body').on('click','.dlt-cart',function (e) {  
+  e.preventDefault();
+  $('.loaderDiv').show();
+  var userData = JSON.parse(localStorage.getItem('user_data'));
+  var cart_pro_id = $(this).attr('data-pro_id');
+  var cart_remove_item = {
+      request_type: "deleteCart", 
+      addtocart_pro_id: cart_pro_id,
+      uemail: userData.email
+  } 
+  var json_str = JSON.stringify(cart_remove_item);
+  $.ajax({  
+      url: API_URL+'addToCart.php',   
+      method:'POST',   
+      data:json_str,
+      contentType: 'application/json',
+      success: function(data) {   
+          var res_data =  JSON.parse(data);   
+          if(res_data.status == 200){
+            $('.loaderDiv').hide();
+            getCartDetails();
+            $(".cart-toggle").load(window.location.href  +  " .cart-toggle > *");
+          }else{
+              $('.result').html('<p class="text-danger">Something wents wrong!</p>');
+          }
+      },
+      error: function(xhr, textStatus, errorThrown) {
+          console.log('Error in Database');
+      }  
+  }); 
+});

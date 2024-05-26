@@ -267,25 +267,25 @@ span.plus, span.minus {
     font-size: 20px;
     cursor: pointer;
 } 
-.number {
-    border: 1px solid #f23e14;
+.number { 
     width: 100%;
     margin: 20px 0;
     background: #f23e14;
     display: table-cell;
+    border-radius: 6px;
 }
 .number .minus, .number .plus {
-    padding: 6px 10px;
-    border: 2px solid #f23e14;
+    padding: 0 10px; 
     background: #f23e14;
     color: #fff;
+    border-radius: 6px;
 }
 .number input {
     width: 30px;
     border: 0; 
     background: #f23e14;
     color: #fff;
-    height: 45px;
+    height: 36px;
 }
 
 /* ========= Product Page ========== */
@@ -364,4 +364,50 @@ label.error {
 .links a { 
     color: #f23e14;
     padding: 10px;
+}
+
+
+.loaderDiv{
+    display: none;
+    height:100vh;
+    width:100%;
+    z-index:999999;
+    background: rgba(0, 0, 0, 0.250);
+    position:fixed;
+    top:0;
+}
+/* HTML: <div class="loader"></div> */
+.loader {
+width: 70px;
+aspect-ratio: 1;
+display: grid;
+border: 4px solid #0000;
+border-radius: 50%;
+border-color: #ccc #0000;
+animation: l16 1s infinite linear;
+margin: 0 auto;
+position: absolute;
+top: 50%;
+left: 0;
+right: 0;
+}
+.loader::before,
+.loader::after {    
+content: "";
+grid-area: 1/1;
+margin: 2px;
+border: inherit;
+border-radius: 50%;
+}
+.loader::before {
+border-color: #f03355 #0000;
+animation: inherit; 
+animation-duration: .5s;
+animation-direction: reverse;
+}
+.loader::after {
+margin: 8px;
+}
+@keyframes l16 { 
+100%{transform: rotate(1turn)}
 }

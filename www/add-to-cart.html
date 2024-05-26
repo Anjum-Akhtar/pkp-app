@@ -19,19 +19,22 @@
                 <div class="col-12" id="cart-detail">
                     <div class="cart-toggle p-4" style="right:-100%">
                         <div class="row">
-                            <div class="col-6">
-                                <h2>Shopping Cart</h2>
+                            <div class="col-12">
+                                <h2 class="carthead">Shopping Cart</h2>
                             </div>
                             <div class="col-12">
                               <form>
+                                <div class="result"></div>
                                 <ul class="cart-page list-unstyled mt-4">
                                 </ul> 
+                              </form>
+                            </div>
+                            <div class="col-12 cartsub">
                                 <div class="d-flex justify-content-between border-top pt-4">
                                     <p><strong>Subtotal</strong></p>
-                                    <p><strong>&#8377;1200.00</strong></p>
+                                    <p class="subtotal"></p>
                                 </div>
                                 <a href="checkout.html" class="w-100 btn" type="submit">Process to Checkout</a>
-                              </form>
                             </div>
                         </div>
                     </div>
@@ -39,7 +42,9 @@
             </div>
         </div>
 
-
+        <div class="loaderDiv">
+            <div class="loader"></div>
+        </div>
         <script src="js/jquery-3.7.1.min.js"></script> 
         <script src="js/bootstrap.bundle.min.js"></script> 
         <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script> 
@@ -47,92 +52,6 @@
         <script src="js/custom.js"></script> 
         <script> 
             header(); 
-           
-
-            /* ============================== Remove Cart Value =============================== */
-            $('body').on('click','.dlt-cart',function () {  
-            var userData = JSON.parse(localStorage.getItem('user_data'));
-                var cart_pro_id = $(this).attr('data-pro_id');
-                var cart_remove_item = {
-                    request_type: "deleteCart", 
-                    addtocart_pro_id: cart_pro_id,
-                    uemail: userData.email
-                } 
-                var json_str = JSON.stringify(cart_remove_item);
-                $.ajax({  
-                    url: API_URL+'addToCart.php',   
-                    method:'POST',   
-                    data:json_str,
-                    contentType: 'application/json',
-                    success: function(data) {   
-                        var res_data =  JSON.parse(data);   
-                        if(res_data.status == 200){
-                            $('.result').html('<p class="text-success">'+res_data.msg+'</p>');
-                            $(".cart-page").load(document.URL +  " .cart-page > *"); 
-                        }else{
-                            $('.result').html('<p class="text-danger">Something wents wrong!</p>');
-                        }
-                    },  
-                    error: function(xhr, textStatus, errorThrown) {  
-                        console.log('Error in Database');  
-                    }  
-                }); 
-            });
-
-            /* ================================= Cart Page =================================== */
-            $(function() {  
-                var userData = JSON.parse(localStorage.getItem('user_data'));
-                var data = {
-                    request_type:"getCartValues",
-                    uemail: userData.email
-                }
-                $.ajax({  
-                    url: API_URL+'addToCart.php',   
-                    method:'POST',   
-                    data:JSON.stringify(data),
-                    header:{ 
-                    "Content-Type": "application/json"
-                    },
-                    success: function(data) {   
-                    var res_data =  JSON.parse(data); 
-                    // console.log(res_data);
-                    $.each(res_data.data,function(index,item){   
-                        // console.log(res_data.data);
-                        $('.cart-page').append(
-                        '<li>\
-                            <div class="row cart-box border-top py-4">\
-                                <div class="col-4">\
-                                    <img class="rounded" src="images/cart1.png" alt="Cart Image">\
-                                </div>\
-                                <div class="col-8">\
-                                    <h3><b>'+item.product_name+'</b></h3>\
-                                    <p class="m-0">Black | S</p>\
-                                    <p><b>&#8377;'+item.pro_id+'</b></p>\
-                                    <div class="row">\
-                                        <div class="col-8">\
-                                            <div class="number">\
-                                                <span class="minus"><i class="fa-regular fa-square-minus"></i></span>\
-                                                <input class="text-center" type="text" value="1"/>\
-                                                <span class="plus"><i class="fa-regular fa-square-plus"></i></span>\
-                                            </div>\
-                                        </div>\
-                                        <div class="col-4 text-end dlt-cart" data-pro_id="'+item.pro_id+'">\
-                                            <i class="fa fa-trash"></i>\
-                                        </div>\
-                                    </div>\
-                                </div> \
-                            </div>\
-                        </li>'
-                        ); 
-                    })  
-                    },  
-                    error: function(xhr, textStatus, errorThrown) {  
-                        console.log('Error in Database');  
-                    }  
-                });  
-            });
-
-
         </script>
 
     </body>

@@ -17,7 +17,8 @@
             <div class="row"> 
                 <div class="col-12 my-5">  
                     <h1 class="title text-center">Checkout</h1>
-                    <form action="" class="row checkout shadow p-4 border my-4" method="POST">
+                    <div class="result"></div>
+                    <form action="" class="row checkout-form shadow p-4 border my-4" method="POST">
                         <div class="mb-3 col-6">
                           <label class="form-label">First Name <span>*</span></label>
                           <input type="text" name="fname" class="form-control shadow-none" required> 
@@ -30,36 +31,37 @@
                           <label class="form-label">Phone Number <span>*</span></label>
                           <input type="text" name="phone" class="form-control shadow-none" required> 
                         </div>
+                        <div class="mb-3 col-12">
+                          <label class="form-label">Email <span>*</span></label>
+                          <input type="text" name="email" class="form-control shadow-none" required> 
+                        </div>
+                        <div class="mb-3 col-6">
+                          <label class="form-label">Country <span>*</span></label>
+                          <input type="text" name="country" class="form-control shadow-none" required> 
+                        </div>
                         <div class="mb-3 col-6">
                           <label class="form-label">Pincode <span>*</span></label>
-                          <input type="email" name="email" class="form-control shadow-none" required> 
+                          <input type="text" name="pincode" class="form-control shadow-none" required> 
                         </div>
                         <div class="mb-3 col-6">
                           <label class="form-label">State <span>*</span></label>
-                          <input type="password" name="pass" id="pass" class="form-control shadow-none" required>
+                          <input type="text" name="state" id="pass" class="form-control shadow-none" required>
                         </div>   
                         <div class="mb-3 col-6">
                           <label class="form-label">City <span>*</span></label>
                           <input type="text" name="city" class="form-control shadow-none" required>
                         </div>    
                         <div class="mb-3 col-12">
-                          <label class="form-label">House No.,Building Name <span>*</span></label>
-                          <textarea name="address1" class="form-control shadow-none" required></textarea>
+                          <label class="form-label">company Name <span>*</span></label>
+                          <input type="text" name="company_name" class="form-control shadow-none" required>
                         </div>   
                         <div class="mb-3 col-12">
                           <label class="form-label">Road name,Area,Colony <span>*</span></label>
-                          <textarea name="address2" class="form-control shadow-none" required></textarea>
-                        </div>   
-                        <div class="mb-3 col-12" role="group">
-                          <label class="form-label">Type of address <span>*</span></label>
-                          <input type="radio" class="btn-check" name="btnradio" id="work" autocomplete="off" checked>
-                          <label class="btn btn-outline-primary" for="work">Work</label>
-                        
-                          <input type="radio" class="btn-check" name="btnradio" id="home" autocomplete="off">
-                          <label class="btn btn-outline-primary" for="home">Home</label> 
-                        </div>
-                        
-                        <a href="thankyou.html" type="submit" name="proceed_to_pay" class="btn w-100">Proceed to Pay</a>
+                          <textarea name="street_addr" class="form-control shadow-none" required></textarea>
+                        </div>    
+                         
+                        <button type="submit" name="checkout-btn" class="btn w-100">Proceed to Pay <span class="spinner-grow spinner-grow-sm"></span></button>
+                        <div class="result text-center mt-4"></div>
                     </form> 
                 </div> 
             </div>
@@ -72,8 +74,89 @@
         <script src="js/jquery.validate.min.js"></script> 
         <script src="js/custom.js"></script> 
         <script> 
-            header();
-        </script>
+          header();
 
+          /* ================================= Checkout Page =================================== */ 
+          $('.checkout-form').validate({
+              rules:{
+                  required:true,
+                  email:{
+                      email:true
+                  },
+                  phone:{
+                      digits:true,
+                      minlength:10,
+                      maxlength:10
+                  }
+              },messages:{
+                  fname:{
+                      required:'Please enter first name'
+                  },
+                  lname:{
+                      required:'Please enter last name'
+                  },
+                  email:{
+                      required:'Please enter eamil address',
+                      email:'Please enter valid email'
+                  },
+                  phone:{
+                      required:'Please enter phone number',
+                      digits:'Please enter number only',
+                      minlength:'Please enter valid number',
+                      maxlength:'You have acceed the length of number'
+                  }
+              },submitHandler:function(form,e){
+                e.preventDefault(); 
+                  $('.spinner-grow').css("display","inline-block");
+                  var check_fname = $('.register input[name=fname]').val();
+                  var check_lname = $('.register input[name=lname]').val();
+                  var check_company_name = $('.register input[name=company_name]').val(); 
+                  var check_street_addr = $('.register textarea[name=street_addr]').val(); 
+                  var check_country = $('.register input[name=country]').val(); 
+                  var check_state = $('.register input[name=state]').val(); 
+                  var check_city = $('.register input[name=city]').val(); 
+                  var check_pincode = $('.register input[name=pincode]').val(); 
+                  var check_phone = $('.register input[name=phone]').val();
+                  var check_email = $('.register input[name=email]').val();
+
+                  var data = {
+                      request_type:"checkout",
+                      fname : check_fname,
+                      lname : check_lname,
+                      company_name : check_company_name,
+                      street_address : check_street_addr,
+                      country : check_country,
+                      state : check_state,
+                      city : check_city,
+                      pincode : check_pincode,    
+                      phone : check_phone,    
+                      email : check_email   
+                  }
+                  var json_reg = JSON.stringify(data);
+
+                  $.ajax({  
+                      url: API_URL+'checkout.php',   
+                      method:'POST',   
+                      data:json_reg,
+                      contentType: 'application/json',
+                      success: function(data) {   
+                          var reg_data =  JSON.parse(data);  
+                          console.log("reg_data",reg_data);
+                          if(reg_data.status=='200'){ 
+                            $('.spinner-grow').css("display","none"); 
+                            $('.result').html('<p class="text-success">'+reg_data.msg+'</p>');
+                          }else{  
+                            $('.spinner-grow').css("display","none");
+                            $('.result').html('<p class="text-danger">'+reg_data.msg+'</p>');
+                          }
+                          
+                      },
+                      error: function(error) {  
+                          console.log('Error in Database');  
+                      } 
+                  });
+              }
+          }); 
+        </script>
     </body>
 </html>

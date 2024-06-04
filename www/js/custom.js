@@ -157,6 +157,9 @@ function header(){
                 <li>\
                     <a class="logout" href="/">logout</a>\
                 </li>\
+                <li>\
+                    <a href="show-address.html">Addresses</a>\
+                </li>\
               </ul>\
             </div>\
         </div>\
@@ -575,9 +578,9 @@ function getCartDetails(){
                             <div class="row">\
                                 <div class="col-8">\
                                     <div class="number">\
-                                        <span class="minus"><i class="fa fa-minus"></i></span>\
-                                        <input class="text-center qty_val" type="text" value="'+item.qty+'"/>\
-                                        <span class="plus"><i class="fa fa-plus"></i></span>\
+                                        <span class="minus" data-minus_pro_id="'+item.pro_id+'" data-uemail="'+userData.email+'"><i class="fa fa-minus"></i></span>\
+                                        <input class="text-center qty_val" name="qty" type="text" value="'+item.qty+'"/>\
+                                        <span class="plus" data-plus_pro_id="'+item.pro_id+'" data-uemail="'+userData.email+'"><i class="fa fa-plus"></i></span>\
                                     </div>\
                                 </div>\
                                 <div class="col-4 text-end dlt-cart" data-pro_id="'+item.pro_id+'">\
@@ -605,12 +608,72 @@ function getCartDetails(){
   });  
 }
 
-/* ================================= Cart Qty plus/minus =================================== */
-$('body').on('click','.cart-box .plus',function(e){
-  e.preventDefault();
-  var qty_plus = Number($('.number input.qty_val').val())+1;
+/* ================================= Cart Qty Plus =================================== */
+$('body').on('click','.number .plus',function(){
+  $('.loaderDiv').show();
+	var plus_pro_id = $(this).attr('data-plus_pro_id');
+	var uemail = $(this).attr('data-uemail'); 
+  var data = {
+    request_type : "CartPlus", 
+    uemail : uemail,
+    pro_id : plus_pro_id
+  } 
+  var json_str = JSON.stringify(data);
+  $.ajax({  
+      url: API_URL+'addToCart.php',   
+      method:'POST',   
+      data:json_str,
+      contentType: 'application/json',
+      success: function(data) {   
+          var res_data =  JSON.parse(data);   
+          if(res_data.status == 200){
+            $('.loaderDiv').hide();
+            getCartDetails();
+            $(".cart-toggle").load(window.location.href  +  " .cart-toggle > *");
+          }else{
+              $('.result').html('<p class="text-danger">Something wents wrong!</p>');
+          }
+      },
+      error: function(xhr, textStatus, errorThrown) {
+          console.log('Error in Database');
+      }  
+  }); 
+});
+/* ================================= Cart Qty Minus =================================== */
+$('body').on('click','.number .minus',function(){
+  $('.loaderDiv').show();
+	var minus_pro_id = $(this).attr('data-minus_pro_id');
+	var uemail = $(this).attr('data-uemail'); 
+	// var qty = $('.number input[name="qty"]').val(); 
+  // if(qty == 1){
 
-  console.log("qty_plus",qty_plus);
+  // }else{
+    var data = {
+      request_type : "CartMinus", 
+      uemail : uemail,
+      pro_id : minus_pro_id
+    } 
+    var json_str = JSON.stringify(data);
+    $.ajax({  
+        url: API_URL+'addToCart.php',   
+        method:'POST',   
+        data:json_str,
+        contentType: 'application/json',
+        success: function(data) {   
+            var res_data =  JSON.parse(data);   
+            if(res_data.status == 200){
+              $('.loaderDiv').hide();
+              getCartDetails();
+              $(".cart-toggle").load(window.location.href  +  " .cart-toggle > *");
+            }else{
+                $('.result').html('<p class="text-danger">Something wents wrong!</p>');
+            }
+        },
+        error: function(xhr, textStatus, errorThrown) {
+            console.log('Error in Database');
+        }  
+    }); 
+  // }
 });
 
 

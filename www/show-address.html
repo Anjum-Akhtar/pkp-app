@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css">
+        <link rel="stylesheet" href="css/style.css">
+        <link rel="stylesheet" href="fontawesome/css/all.min.css">
+        
+        <title>PKP APP</title>
+    </head>
+    <body>
+        <div class="header"></div> 
+
+        <div class="container all-addresses-page">
+            <div class="row"> 
+                <div class="col-12 my-5">  
+                    <h1 class="title text-center">All Addresses</h1> 
+                    <a class="" href="/user-address.html">Add Address</a>
+                    <ul id="userAddr"></ul>
+                </div> 
+            </div>
+        </div>
+
+
+        <script src="js/jquery-3.7.1.min.js"></script> 
+        <script src="js/bootstrap.bundle.min.js"></script> 
+        <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script> 
+        <script src="js/jquery.validate.min.js"></script> 
+        <script src="js/custom.js"></script> 
+        <script> 
+          header();
+
+          /* ================================= Address Page =================================== */ 
+          $(function(){
+            var userData = JSON.parse(localStorage.getItem('user_data')); 
+            var data = {
+              request_type:"show_address",
+              user_email : userData.email
+            }
+            var json_str = JSON.stringify(data); 
+            $.ajax({  
+                url: API_URL+'user_address.php',   
+                method:'POST',   
+                data:json_str,
+                contentType: 'application/json',
+                success: function(data) {    
+                  var res_data =  JSON.parse(data);  
+                  $.each(res_data.data,function(index,item){    
+                    $('#userAddr').append(
+                      '<li>\
+                        <address>'+item.user_fname+' '+item.user_lname+'<br>\
+                        '+item.user_phone+'<br>\
+                        '+item.user_company+'<br>\
+                        '+item.user_country+'\
+                        '+item.user_state+'\
+                        '+item.user_city+'\
+                        '+item.user_pin_code+'<br>\
+                        '+item.user_street_add+'</address>\
+                      </li>'
+                    );  
+                  })  
+                },  
+                error: function(xhr, textStatus, errorThrown) {  
+                  console.log('Error in Database');  
+                }  
+            });  
+          }); 
+        </script>
+    </body>
+</html>

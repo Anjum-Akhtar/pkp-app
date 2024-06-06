@@ -18,7 +18,7 @@
                 <div class="col-12 my-5">  
                     <h1 class="title text-center">All Addresses</h1> 
                     <a class="" href="/user-address.html">Add Address</a>
-                    <ul id="userAddr"></ul>
+                    <div id="userAddr"></div>
                 </div> 
             </div>
         </div>
@@ -47,18 +47,22 @@
                 contentType: 'application/json',
                 success: function(data) {    
                   var res_data =  JSON.parse(data);  
-                  $.each(res_data.data,function(index,item){    
-                    $('#userAddr').append(
-                      '<li>\
-                        <address>'+item.user_fname+' '+item.user_lname+'<br>\
-                        '+item.user_phone+'<br>\
-                        '+item.user_company+'<br>\
-                        '+item.user_country+'\
-                        '+item.user_state+'\
-                        '+item.user_city+'\
-                        '+item.user_pin_code+'<br>\
-                        '+item.user_street_add+'</address>\
-                      </li>'
+                  $.each(res_data.data,function(index,item){   
+                    // console.log(res_data.data); 
+                    $('#userAddr').append( 
+                        '<div class="form-check">\
+                          <input class="form-check-input radio-input" type="radio" name="select_addr" id="'+item.user_fname+'_'+item.id+'">\
+                          <label class="form-check-label" for="'+item.user_fname+'_'+item.id+'">\
+                            <address>'+item.user_fname+' '+item.user_lname+'<br>\
+                              '+item.user_phone+'<br>\
+                              '+item.user_company+'<br>\
+                              '+item.user_country+'\
+                              '+item.user_state+'\
+                              '+item.user_city+'\
+                              '+item.user_pin_code+'<br>\
+                              '+item.user_street_add+'</address>\
+                          </label>\
+                        </div>'
                     );  
                   })  
                 },  
@@ -67,6 +71,7 @@
                 }  
             });  
           }); 
+ 
         </script>
     </body>
 </html>

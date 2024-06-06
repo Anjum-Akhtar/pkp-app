@@ -709,3 +709,15 @@ $('body').on('click','.dlt-cart',function (e) {
       }  
   }); 
 });
+
+
+/* ================================= Select Address =================================== */
+$(document).ready(function () {
+  $('body').on('click','.radio-input',function(){
+    if($(this).hasClass('checked')){
+      $(this).removeClass('checked');
+    }else{
+      $(this).addClass('checked');
+    }
+  });
+});

@@ -16,33 +16,153 @@
         <div class="container checkout-page">
             <div class="row"> 
                 <div class="col-12 my-5">  
-                    <h1 class="title text-center">Checkout</h1>
-                    <div class="result"></div> 
-                    <form class="cart-toggle" action="" method="POST">
-                      <a class="" href="/show-address.html">Select Address</a>
-                      <ul class="cart-page list-unstyled mt-4">
-                    </ul> 
+                    <h1 class="title text-center">Place Order</h1> 
+                    <form class="checkout_form" action="" method="POST">
+                        <div class="result mt-4"></div>
+                        <a class="" href="/show-address.html">Select Address</a>
+                        <div class="selected-address mt-4"></div>
+                        <div class="payment-method">
+                            <p><b>Select payment method:</b></p>
+                           <div class="method">
+                                <label for=""><input type="radio" value="COD" name="pay_method" required> Cash on Delivery</label>
+                           </div>
+                           <div class="method">
+                                <label for=""><input type="radio" value="razorpay" name="pay_method" required> RazorPay</label>
+                           </div>
+                        </div>
+                        <div class="price-details mt-4">
+                            <p><b>Price Details:</b></p> 
+                            <div class="col-12 cartsub">
+                                <div class="d-flex justify-content-between">
+                                    <p>Price(<span class="cartQty"></span> Items)</p>
+                                    <p class="subtotal"></p>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <p>Delivery Charges</p>
+                                    <p class="">Free Delivery</p>
+                                </div>
+                                <!-- <a href="" class="w-100 btn" type="submit">Continue <span class="spinner-grow spinner-grow-sm"></span></a> -->
+                                <button type="submit" name="checkout" class="btn w-100">Continue <span class="spinner-grow spinner-grow-sm"></span></button>
+                            </div>
+                        </div>
                     </form>
                 </div> 
             </div>
         </div>
 
-
         <script src="js/jquery-3.7.1.min.js"></script> 
         <script src="js/bootstrap.bundle.min.js"></script> 
         <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script> 
         <script src="js/jquery.validate.min.js"></script> 
-        <script src="js/custom.js"></script> 
-        <script> 
+        <script src="js/custom.js"></script>
+        <script>
           header();
 
-          /* ================================= Checkout Page =================================== */ 
-          $(function(){
-            var userData = JSON.parse(localStorage.getItem('user_data')); 
-                console.log(userData.email);
-                $('#email').val(userData.email);
-                $('#email').prop('readonly', true);
-          }); 
+          /* ================================= Place Order Page =================================== */ 
+            $(function(){
+                var userData = JSON.parse(localStorage.getItem('user_data')); 
+                    // console.log(userData.email);
+                    $('#email').val(userData.email);
+                    $('#email').prop('readonly', true);
+
+                var selected_user_addr = JSON.parse(localStorage.getItem('addr_user_selected'));  
+                var data = {
+                request_type:"show_selected_address",
+                addr_id : selected_user_addr
+                }
+                var json_str = JSON.stringify(data); 
+                $.ajax({  
+                    url: API_URL+'user_address.php',   
+                    method:'POST',   
+                    data:json_str,
+                    contentType: 'application/json',
+                    success: function(data) {    
+                        var res_data =  JSON.parse(data);   
+                        $('.selected-address').append(  
+                            '<p>'+res_data.data.user_fname+' '+res_data.data.user_lname+'<br>\
+                                '+res_data.data.user_phone+'<br>\
+                                '+res_data.data.user_company+'<br>\
+                                '+res_data.data.user_country+'\
+                                '+res_data.data.user_state+'\
+                                '+res_data.data.user_city+'\
+                                '+res_data.data.user_pin_code+'<br>\
+                                '+res_data.data.user_street_add+
+                            '</p>'
+                        ); 
+                    },  
+                    error: function(xhr, textStatus, errorThrown) {  
+                    console.log('Error in Database');  
+                    }  
+                }); 
+
+
+              
+
+                // Save checkout data 
+                $('.checkout_form').validate({
+                    rules:{
+                        required:true, 
+                    },submitHandler:function(form,e){
+                        e.preventDefault();
+                        $('.spinner-grow').css("display","inline-block");
+                        var pay_method = $('.checkout_form input[name=pay_method]:checked').val();  
+                        if(pay_method == 'COD'){
+                            var payment_status = 'pending';
+                            var order_status = 'success';
+                        }else if(pay_method == 'razorpay'){
+                            var payment_status = 'success';
+                            var order_status = 'success';
+                        }
+                        var cartTotal = JSON.parse(localStorage.getItem('cart_total_price'));
+
+                        // Cart data
+                        var cartData = JSON.parse(localStorage.getItem("cart_data"));
+                        // console.log("retrievedData", cartData);
+
+                        var user_checkout_data = {
+                            request_type    : "checkout", 
+                            email           : userData.email, 
+                            total_price     : cartTotal, 
+                            final_price     : cartTotal, 
+                            payment_type    : pay_method, 
+                            payment_status  : payment_status,
+                            order_status    : order_status,
+                            user_address_id : selected_user_addr,
+                            cart_items      : []
+                        };
+                        $.each(cartData,function(index,item){
+                            user_checkout_data.cart_items.push({
+                                pro_id    : item.pro_id,
+                                qty       : item.qty,
+                                pro_price : item.price
+                            });
+                        });
+                        var json_checkout = JSON.stringify(user_checkout_data);  
+                        $.ajax({  
+                            url: API_URL+'checkout.php',   
+                            method:'POST',   
+                            data:json_checkout,
+                            contentType: 'application/json',
+                            success: function(data) {    
+                                var checkoutData =  JSON.parse(data);  
+                                $('.spinner-grow').css("display","none");
+                                if(checkoutData.status == 200){    
+                                    $('.result').html('<p class="text-success">'+checkoutData.msg+'</p>');
+                                    // pay_method == 'COD'
+                                    console.log("pay_method", pay_method);
+                                }else{ 
+                                    $('.result').html('<p class="text-danger">Something wents wrong!</p>');
+                                } 
+                            },
+                            error: function(error) {  
+                                console.log('Error in Database');  
+                            } 
+                        });
+                    }
+                }); 
+            });
+
+
         </script>
     </body>
 </html>

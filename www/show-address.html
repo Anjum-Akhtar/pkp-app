@@ -17,8 +17,10 @@
             <div class="row"> 
                 <div class="col-12 my-5">  
                     <h1 class="title text-center">All Addresses</h1> 
-                    <a class="" href="/user-address.html">Add Address</a>
-                    <div id="userAddr"></div>
+                    <a class="" href="/user-address.html">Add Address</a> 
+                      <form id="addrForm">
+
+                      </form> 
                 </div> 
             </div>
         </div>
@@ -49,9 +51,9 @@
                   var res_data =  JSON.parse(data);  
                   $.each(res_data.data,function(index,item){   
                     // console.log(res_data.data); 
-                    $('#userAddr').append( 
+                    $('#addrForm').append( 
                         '<div class="form-check">\
-                          <input class="form-check-input radio-input" type="radio" name="select_addr" id="'+item.user_fname+'_'+item.id+'">\
+                          <input class="form-check-input radio-input" type="radio" name="select_addr" id="'+item.user_fname+'_'+item.id+'" value="'+item.id+'">\
                           <label class="form-check-label" for="'+item.user_fname+'_'+item.id+'">\
                             <address>'+item.user_fname+' '+item.user_lname+'<br>\
                               '+item.user_phone+'<br>\

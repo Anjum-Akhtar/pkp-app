@@ -147,9 +147,11 @@
                                 var checkoutData =  JSON.parse(data);  
                                 $('.spinner-grow').css("display","none");
                                 if(checkoutData.status == 200){    
-                                    $('.result').html('<p class="text-success">'+checkoutData.msg+'</p>');
-                                    // pay_method == 'COD'
+                                    $('.result').html('<p class="text-success">'+checkoutData.msg+'</p>'); 
                                     console.log("pay_method", pay_method);
+                                    if(pay_method == 'COD'){
+                                        window.location.href = '/thankyou.html?order-id='+checkoutData.order_id;
+                                    }
                                 }else{ 
                                     $('.result').html('<p class="text-danger">Something wents wrong!</p>');
                                 } 
